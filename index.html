@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sheets Data Entry Platform</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: #f5f5f5;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: row-reverse; /* sidebar on the right */
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: 260px;
+      background: #1f2933;
+      color: #fff;
+      padding: 16px;
+    }
+
+    .sidebar h2 {
+      font-size: 18px;
+      margin-top: 0;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+
+    .sheet-list {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 20px 0;
+      max-height: 60vh;
+      overflow-y: auto;
+    }
+
+    .sheet-list li {
+      margin-bottom: 6px;
+    }
+
+    .sheet-btn {
+      width: 100%;
+      border: none;
+      padding: 8px 10px;
+      border-radius: 6px;
+      background: #374151;
+      color: #fff;
+      text-align: right;
+      cursor: pointer;
+      font-size: 13px;
+      transition: background 0.15s, transform 0.1s;
+    }
+
+    .sheet-btn:hover {
+      background: #4b5563;
+      transform: translateY(-1px);
+    }
+
+    .sheet-btn.active {
+      background: #0ea5e9;
+      color: #0b1120;
+      font-weight: 600;
+    }
+
+    .json-controls {
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: 10px;
+      margin-top: 10px;
+      font-size: 13px;
+    }
+
+    .json-controls button,
+    .json-controls label {
+      display: block;
+      width: 100%;
+      margin-bottom: 6px;
+      padding: 8px 10px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      font-size: 13px;
+      text-align: center;
+    }
+
+    .json-controls button {
+      background: #10b981;
+      color: #022c22;
+      font-weight: 600;
+    }
+
+    .json-controls button:hover {
+      background: #34d399;
+    }
+
+    .file-label {
+      background: #e5e7eb;
+      color: #111827;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .file-label:hover {
+      background: #d1d5db;
+    }
+
+    .file-label input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .main {
+      flex: 1;
+      padding: 20px;
+    }
+
+    .main-card {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 10px 20px rgba(15,23,42,0.08);
+      min-height: calc(100vh - 40px);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .main-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      border-bottom: 1px solid #e5e7eb;
+      padding-bottom: 10px;
+    }
+
+    .main-header h2 {
+      margin: 0;
+      font-size: 18px;
+      color: #111827;
+    }
+
+    .hint {
+      font-size: 12px;
+      color: #6b7280;
+    }
+
+    form {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 10px 16px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 13px;
+    }
+
+    label {
+      font-weight: 500;
+      color: #374151;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="date"] {
+      padding: 7px 8px;
+      border-radius: 6px;
+      border: 1px solid #d1d5db;
+      font-size: 13px;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #0ea5e9;
+      box-shadow: 0 0 0 1px rgba(14,165,233,0.3);
+    }
+
+    .actions-row {
+      margin-top: 4px;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    #saveRowBtn {
+      background: #0ea5e9;
+      color: #0b1120;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 16px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    #saveRowBtn:hover {
+      background: #38bdf8;
+    }
+
+    #message {
+      font-size: 13px;
+      min-height: 18px;
+    }
+
+    #message.success {
+      color: #059669;
+    }
+
+    #message.error {
+      color: #b91c1c;
+    }
+
+    .table-wrapper {
+      margin-top: 10px;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      min-width: 600px;
+    }
+
+    th, td {
+      border: 1px solid #e5e7eb;
+      padding: 6px 8px;
+      text-align: right;
+    }
+
+    th {
+      background: #f9fafb;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    tr:nth-child(even) td {
+      background: #f9fafb;
+    }
+
+    .no-data {
+      font-size: 12px;
+      color: #9ca3af;
+    }
+
+    @media (max-width: 800px) {
+      .container {
+        flex-direction: column;
+      }
+      .sidebar {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .sheet-list {
+        max-height: 150px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Right sidebar: sheets list and JSON controls -->
+    <aside class="sidebar">
+      <h2>Sheets</h2>
+      <ul id="sheetList" class="sheet-list"></ul>
+
+      <div class="json-controls">
+        <button id="exportJsonBtn">Export data as JSON</button>
+        <label class="file-label">
+          Import data from JSON
+          <input type="file" id="importJsonInput" accept="application/json">
+        </label>
+      </div>
+    </aside>
+
+    <!-- Left main area: form and table -->
+    <main class="main">
+      <div class="main-card">
+        <div class="main-header">
+          <div>
+            <h2 id="sheetTitle">Select a sheet from the right sidebar</h2>
+            <div class="hint">
+              You can edit sheet names and fields in the JavaScript code to match your Excel file.
+            </div>
+          </div>
+        </div>
+
+        <form id="dataForm"></form>
+
+        <div class="actions-row">
+          <button id="saveRowBtn" type="button">Save row</button>
+          <div id="message"></div>
+        </div>
+
+        <div class="table-wrapper">
+          <table id="dataTable"></table>
+          <div id="noDataMsg" class="no-data"></div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // Configure sheets and their columns here.
+    const sheetsConfig = {
+      "QC Sequence Number": [
+        "SR NO.",
+        "DATE",
+        "QC SEQUENCE NUMBER",
+        "PO NUMBER",
+        "MATERIAL DOCUMENT NUMBER",
+        "LOCATED BY",
+        "REMARK"
+      ],
+      "MIV Sequence Number": [
+        "SR NO.",
+        "DATE",
+        "MIV SEQUENCE NUMBER",
+        "RESERVATION NUMBER",
+        "MATERIAL DOCUMENT NUMBER",
+        "ISSUED BY",
+        "REMARK"
+      ],
+      // Add the rest of your sheets here, for example:
+      // "Urgent book report": [
+      //   "SR NO.",
+      //   "UB SR NO.",
+      //   "PO NUMBER",
+      //   "SUPPLIER",
+      //   "ITEM DESCRIPTION"
+      //   // ...
+      // ],
+      // "MRV Sequence Number": [ ... ],
+      // "SES Sequence Number": [ ... ],
+      // "OSDR Sequence Number": [ ... ],
+      // "Supply Chain Department": [ ... ],
+      // "PR Sequence Number": [ ... ],
+      // "GATE PASS-POD": [ ... ],
+      // "EQUIPMENT CERTIFICATE": [ ... ],
+      // "KM Shipping Invoice": [ ... ],
+      // "INVOICE TRACKING REPORT": [ ... ]
+    };
+
+    // In-memory data store: sheet name -> array of row objects
+    const dataStore = {};
+    Object.keys(sheetsConfig).forEach(name => {
+      dataStore[name] = [];
+    });
+
+    let currentSheet = null;
+
+    const sheetListEl = document.getElementById("sheetList");
+    const sheetTitleEl = document.getElementById("sheetTitle");
+    const formEl = document.getElementById("dataForm");
+    const saveRowBtn = document.getElementById("saveRowBtn");
+    const messageEl = document.getElementById("message");
+    const tableEl = document.getElementById("dataTable");
+    const noDataMsgEl = document.getElementById("noDataMsg");
+    const exportJsonBtn = document.getElementById("exportJsonBtn");
+    const importJsonInput = document.getElementById("importJsonInput");
+
+    function renderSheetList() {
+      sheetListEl.innerHTML = "";
+      Object.keys(sheetsConfig).forEach(name => {
+        const li = document.createElement("li");
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.textContent = name;
+        btn.className = "sheet-btn" + (name === currentSheet ? " active" : "");
+        btn.addEventListener("click", () => selectSheet(name));
+        li.appendChild(btn);
+        sheetListEl.appendChild(li);
+      });
+    }
+
+    function selectSheet(name) {
+      currentSheet = name;
+      sheetTitleEl.textContent = name;
+      messageEl.textContent = "";
+      messageEl.className = "";
+      renderSheetList();
+      renderForm();
+      renderTable();
+    }
+
+    function guessInputType(fieldName) {
+      const upper = fieldName.toUpperCase();
+      if (upper.includes("DATE")) return "date";
+      if (upper.includes("NO.") || upper.includes("NUMBER") || upper.includes("SEQ")) {
+        return "text"; // often IDs and sequences may start with zero
+      }
+      return "text";
+    }
+
+    function fieldId(fieldName, index) {
+      return (
+        "field_" +
+        index +
+        "_" +
+        fieldName
+          .toString()
+          .replace(/[^a-zA-Z0-9]+/g, "_")
+      );
+    }
+
+    function renderForm() {
+      formEl.innerHTML = "";
+      if (!currentSheet) return;
+
+      const fields = sheetsConfig[currentSheet] || [];
+      fields.forEach((fieldName, index) => {
+        const group = document.createElement("div");
+        group.className = "form-group";
+
+        const label = document.createElement("label");
+        label.textContent = fieldName;
+        const input = document.createElement("input");
+        const type = guessInputType(fieldName);
+        input.type = type;
+        input.id = fieldId(fieldName, index);
+        input.name = input.id;
+
+        group.appendChild(label);
+        group.appendChild(input);
+        formEl.appendChild(group);
+      });
+    }
+
+    function renderTable() {
+      tableEl.innerHTML = "";
+      noDataMsgEl.textContent = "";
+
+      if (!currentSheet) return;
+
+      const rows = dataStore[currentSheet] || [];
+      const fields = sheetsConfig[currentSheet] || [];
+
+      if (!fields.length) {
+        noDataMsgEl.textContent = "No fields are defined for this sheet in the code.";
+        return;
+      }
+
+      if (!rows.length) {
+        noDataMsgEl.textContent = "No data entered for this sheet yet.";
+        return;
+      }
+
+      const thead = document.createElement("thead");
+      const headerRow = document.createElement("tr");
+
+      fields.forEach(fieldName => {
+        const th = document.createElement("th");
+        th.textContent = fieldName;
+        headerRow.appendChild(th);
+      });
+      thead.appendChild(headerRow);
+      tableEl.appendChild(thead);
+
+      const tbody = document.createElement("tbody");
+      rows.forEach(row => {
+        const tr = document.createElement("tr");
+        fields.forEach(fieldName => {
+          const td = document.createElement("td");
+          td.textContent = row[fieldName] ?? "";
+          tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+      });
+      tableEl.appendChild(tbody);
+    }
+
+    function saveRow() {
+      if (!currentSheet) {
+        showMessage("Please select a sheet first.", "error");
+        return;
+      }
+
+      const fields = sheetsConfig[currentSheet] || [];
+      if (!fields.length) {
+        showMessage("No fields defined for this sheet in the code.", "error");
+        return;
+      }
+
+      const newRow = {};
+      let hasAnyValue = false;
+
+      fields.forEach((fieldName, index) => {
+        const id = fieldId(fieldName, index);
+        const input = document.getElementById(id);
+        const value = (input && input.value != null) ? input.value.trim() : "";
+        if (value !== "") {
+          hasAnyValue = true;
+        }
+        newRow[fieldName] = value;
+      });
+
+      if (!hasAnyValue) {
+        showMessage("Please fill at least one field before saving.", "error");
+        return;
+      }
+
+      dataStore[currentSheet].push(newRow);
+
+      fields.forEach((fieldName, index) => {
+        const id = fieldId(fieldName, index);
+        const input = document.getElementById(id);
+        if (input) input.value = "";
+      });
+
+      renderTable();
+      showMessage("Row saved successfully.", "success");
+    }
+
+    function showMessage(text, type) {
+      messageEl.textContent = text;
+      messageEl.className = type ? type : "";
+    }
+
+    function exportJson() {
+      const blob = new Blob([JSON.stringify(dataStore, null, 2)], {
+        type: "application/json"
+      });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "sheets-data.json";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showMessage("Data exported as JSON.", "success");
+    }
+
+    function importJson(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = e => {
+        try {
+          const imported = JSON.parse(e.target.result);
+
+          Object.keys(sheetsConfig).forEach(sheetName => {
+            if (Array.isArray(imported[sheetName])) {
+              dataStore[sheetName] = imported[sheetName];
+            }
+          });
+
+          renderTable();
+          showMessage("Data imported from JSON.", "success");
+        } catch (err) {
+          console.error(err);
+          showMessage("Error reading JSON file.", "error");
+        } finally {
+          event.target.value = "";
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    saveRowBtn.addEventListener("click", saveRow);
+    exportJsonBtn.addEventListener("click", exportJson);
+    importJsonInput.addEventListener("change", importJson);
+
+    window.addEventListener("load", () => {
+      renderSheetList();
+      const first = Object.keys(sheetsConfig)[0];
+      if (first) {
+        selectSheet(first);
+      }
+    });
+  </script>
+</body>
+</html>
