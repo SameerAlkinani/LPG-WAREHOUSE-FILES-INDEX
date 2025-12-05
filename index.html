@@ -11,34 +11,97 @@
 
     body {
       margin: 0;
-      background: #f5f5f5;
+      background: #f3f4f6;
+      color: #111827;
     }
 
-    .container {
+    .app-shell {
       display: flex;
-      flex-direction: row-reverse; /* sidebar on the right */
+      flex-direction: column;
       min-height: 100vh;
     }
 
-    .sidebar {
-      width: 260px;
-      background: #1f2933;
-      color: #fff;
-      padding: 16px;
+    .app-header {
+      background: #0f172a;
+      color: #e5e7eb;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      box-shadow: 0 2px 6px rgba(15,23,42,0.25);
     }
 
-    .sidebar h2 {
+    .app-header-title {
       font-size: 18px;
-      margin-top: 0;
-      margin-bottom: 12px;
-      text-align: center;
+      font-weight: 600;
+    }
+
+    .app-header-sub {
+      font-size: 12px;
+      color: #9ca3af;
+    }
+
+    .app-header-right {
+      font-size: 12px;
+      color: #9ca3af;
+      text-align: right;
+    }
+
+    .app-body {
+      flex: 1;
+      display: flex;
+      flex-direction: row-reverse; /* sidebar on the right */
+      min-height: calc(100vh - 52px);
+    }
+
+    /* Sidebar */
+
+    .sidebar {
+      width: 280px;
+      background: #111827;
+      color: #e5e7eb;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      border-left: 1px solid #1f2937;
+    }
+
+    .sidebar-section-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 4px;
+    }
+
+    .sheets-count {
+      font-size: 11px;
+      color: #9ca3af;
+    }
+
+    .sidebar-search {
+      width: 100%;
+      padding: 6px 8px;
+      border-radius: 6px;
+      border: 1px solid #374151;
+      background: #020617;
+      color: #e5e7eb;
+      font-size: 12px;
+    }
+
+    .sidebar-search::placeholder {
+      color: #6b7280;
     }
 
     .sheet-list {
       list-style: none;
       padding: 0;
-      margin: 0 0 20px 0;
-      max-height: 60vh;
+      margin: 0;
+      max-height: 50vh;
       overflow-y: auto;
     }
 
@@ -51,52 +114,76 @@
       border: none;
       padding: 8px 10px;
       border-radius: 6px;
-      background: #374151;
-      color: #fff;
+      background: #111827;
+      color: #e5e7eb;
       text-align: right;
       cursor: pointer;
-      font-size: 13px;
-      transition: background 0.15s, transform 0.1s;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      border: 1px solid transparent;
+      transition: background 0.15s, transform 0.1s, border-color 0.15s;
+    }
+
+    .sheet-btn span.name {
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .sheet-btn span.fields-count {
+      font-size: 10px;
+      color: #9ca3af;
     }
 
     .sheet-btn:hover {
-      background: #4b5563;
+      background: #1f2937;
+      border-color: #374151;
       transform: translateY(-1px);
     }
 
     .sheet-btn.active {
       background: #0ea5e9;
       color: #0b1120;
+      border-color: #38bdf8;
       font-weight: 600;
     }
 
     .json-controls {
-      border-top: 1px solid rgba(255,255,255,0.1);
+      border-top: 1px solid #1f2937;
       padding-top: 10px;
-      margin-top: 10px;
-      font-size: 13px;
+      margin-top: 4px;
+      font-size: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
     }
 
-    .json-controls button,
-    .json-controls label {
-      display: block;
-      width: 100%;
-      margin-bottom: 6px;
-      padding: 8px 10px;
+    .btn,
+    .file-label {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
       border-radius: 6px;
+      padding: 7px 10px;
       border: none;
       cursor: pointer;
-      font-size: 13px;
+      font-size: 12px;
+      font-weight: 500;
       text-align: center;
+      text-decoration: none;
     }
 
-    .json-controls button {
+    .btn-primary {
       background: #10b981;
       color: #022c22;
-      font-weight: 600;
     }
 
-    .json-controls button:hover {
+    .btn-primary:hover {
       background: #34d399;
     }
 
@@ -118,40 +205,121 @@
       cursor: pointer;
     }
 
+    .json-hint {
+      font-size: 11px;
+      color: #9ca3af;
+      line-height: 1.4;
+    }
+
+    /* Main area */
+
     .main {
       flex: 1;
-      padding: 20px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
     }
 
     .main-card {
       background: #ffffff;
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 10px 20px rgba(15,23,42,0.08);
-      min-height: calc(100vh - 40px);
+      border-radius: 14px;
+      padding: 16px 18px;
+      box-shadow: 0 10px 24px rgba(15,23,42,0.08);
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 14px;
+      min-height: calc(100vh - 64px);
     }
 
     .main-header {
       display: flex;
-      align-items: center;
+      flex-wrap: wrap;
+      align-items: flex-start;
       justify-content: space-between;
       gap: 10px;
       border-bottom: 1px solid #e5e7eb;
-      padding-bottom: 10px;
+      padding-bottom: 8px;
     }
 
-    .main-header h2 {
-      margin: 0;
+    .main-header-left {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .main-header-title {
       font-size: 18px;
+      margin: 0;
+    }
+
+    .main-header-sub {
+      font-size: 12px;
+      color: #6b7280;
+    }
+
+    .main-header-right {
+      text-align: right;
+      font-size: 11px;
+      color: #6b7280;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      font-size: 11px;
+      font-weight: 500;
+      margin-left: 4px;
+    }
+
+    .tag-ghost {
+      background: #f9fafb;
+      color: #4b5563;
+    }
+
+    /* Form area */
+
+    .form-header-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .form-title {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .form-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .btn-secondary {
+      background: #e5e7eb;
       color: #111827;
     }
 
-    .hint {
-      font-size: 12px;
-      color: #6b7280;
+    .btn-secondary:hover {
+      background: #d1d5db;
+    }
+
+    .btn-danger {
+      background: #ef4444;
+      color: #fef2f2;
+    }
+
+    .btn-danger:hover {
+      background: #f97373;
     }
 
     form {
@@ -172,6 +340,11 @@
       color: #374151;
     }
 
+    .field-hint {
+      font-size: 11px;
+      color: #9ca3af;
+    }
+
     input[type="text"],
     input[type="number"],
     input[type="date"] {
@@ -187,31 +360,16 @@
       box-shadow: 0 0 0 1px rgba(14,165,233,0.3);
     }
 
-    .actions-row {
-      margin-top: 4px;
+    .status-row {
       display: flex;
-      gap: 8px;
-      align-items: center;
       flex-wrap: wrap;
-    }
-
-    #saveRowBtn {
-      background: #0ea5e9;
-      color: #0b1120;
-      border: none;
-      border-radius: 8px;
-      padding: 8px 16px;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    #saveRowBtn:hover {
-      background: #38bdf8;
+      align-items: center;
+      gap: 8px;
+      margin-top: 4px;
+      font-size: 12px;
     }
 
     #message {
-      font-size: 13px;
       min-height: 18px;
     }
 
@@ -223,26 +381,63 @@
       color: #b91c1c;
     }
 
+    .edit-indicator {
+      font-size: 11px;
+      color: #b45309;
+      background: #fffbeb;
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid #facc15;
+    }
+
+    /* Table area */
+
+    .table-header-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: center;
+      margin-top: 6px;
+    }
+
+    .row-stats {
+      font-size: 11px;
+      color: #6b7280;
+    }
+
+    .table-search {
+      padding: 6px 8px;
+      border-radius: 6px;
+      border: 1px solid #d1d5db;
+      font-size: 12px;
+      min-width: 200px;
+    }
+
     .table-wrapper {
-      margin-top: 10px;
+      margin-top: 6px;
       overflow-x: auto;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      background: #f9fafb;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
       font-size: 12px;
-      min-width: 600px;
+      min-width: 650px;
     }
 
     th, td {
-      border: 1px solid #e5e7eb;
+      border-bottom: 1px solid #e5e7eb;
       padding: 6px 8px;
-      text-align: right;
+      text-align: left;
+      vertical-align: top;
     }
 
     th {
-      background: #f9fafb;
+      background: #f3f4f6;
       font-weight: 600;
       white-space: nowrap;
     }
@@ -251,72 +446,172 @@
       background: #f9fafb;
     }
 
+    tr:hover td {
+      background: #eef2ff;
+    }
+
     .no-data {
       font-size: 12px;
       color: #9ca3af;
+      padding: 10px 0 2px;
     }
 
-    @media (max-width: 800px) {
-      .container {
+    .table-actions {
+      display: flex;
+      gap: 4px;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+    }
+
+    .table-btn {
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-size: 11px;
+      padding: 3px 8px;
+    }
+
+    .table-btn-edit {
+      background: #e0f2fe;
+      color: #0369a1;
+    }
+
+    .table-btn-edit:hover {
+      background: #bae6fd;
+    }
+
+    .table-btn-delete {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+
+    .table-btn-delete:hover {
+      background: #fecaca;
+    }
+
+    @media (max-width: 900px) {
+      .app-body {
         flex-direction: column;
       }
       .sidebar {
         width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
+        border-left: none;
+        border-bottom: 1px solid #1f2937;
       }
-      .sheet-list {
-        max-height: 150px;
+      .main-card {
+        min-height: auto;
       }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <!-- Right sidebar: sheets list and JSON controls -->
-    <aside class="sidebar">
-      <h2>Sheets</h2>
-      <ul id="sheetList" class="sheet-list"></ul>
-
-      <div class="json-controls">
-        <button id="exportJsonBtn">Export data as JSON</button>
-        <label class="file-label">
-          Import data from JSON
-          <input type="file" id="importJsonInput" accept="application/json">
-        </label>
+  <div class="app-shell">
+    <header class="app-header">
+      <div>
+        <div class="app-header-title">Sheets Data Entry Platform</div>
+        <div class="app-header-sub">Multi-sheet data entry, edit, search, and JSON import/export</div>
       </div>
-    </aside>
+      <div class="app-header-right">
+        <div>Data is also saved locally in your browser (localStorage).</div>
+        <div>JSON export is ideal for backup or sharing.</div>
+      </div>
+    </header>
 
-    <!-- Left main area: form and table -->
-    <main class="main">
-      <div class="main-card">
-        <div class="main-header">
-          <div>
-            <h2 id="sheetTitle">Select a sheet from the right sidebar</h2>
-            <div class="hint">
-              You can edit sheet names and fields in the JavaScript code to match your Excel file.
-            </div>
+    <div class="app-body">
+      <!-- Sidebar on the right -->
+      <aside class="sidebar">
+        <div>
+          <div class="sidebar-section-title">
+            <span>Sheets</span>
+            <span class="sheets-count" id="sheetsCount"></span>
+          </div>
+          <input
+            id="sheetSearch"
+            class="sidebar-search"
+            type="text"
+            placeholder="Search sheets..."
+          />
+          <ul id="sheetList" class="sheet-list"></ul>
+        </div>
+
+        <div class="json-controls">
+          <div class="sidebar-section-title">
+            <span>JSON Backup</span>
+          </div>
+          <button id="exportJsonBtn" class="btn btn-primary" type="button">
+            Export all sheets as JSON
+          </button>
+          <label class="file-label">
+            Import from JSON
+            <input type="file" id="importJsonInput" accept="application/json">
+          </label>
+          <div class="json-hint">
+            Export creates a <b>sheets-data.json</b> file containing all sheets.<br/>
+            Import will merge data for sheets that exist in this app.
           </div>
         </div>
+      </aside>
 
-        <form id="dataForm"></form>
+      <!-- Main area on the left -->
+      <main class="main">
+        <section class="main-card">
+          <div class="main-header">
+            <div class="main-header-left">
+              <h2 id="sheetTitle" class="main-header-title">Select a sheet from the right sidebar</h2>
+              <div id="sheetSubtitle" class="main-header-sub">
+                Sheet fields and names are automatically generated from your Excel file.
+              </div>
+            </div>
+            <div class="main-header-right">
+              <div>
+                <span class="tag tag-ghost">
+                  <span id="fieldsCountTag">0 fields</span>
+                </span>
+                <span class="tag tag-ghost">
+                  <span id="rowsCountTag">0 rows</span>
+                </span>
+              </div>
+              <div>Click a row to edit it, or add new rows from the form below.</div>
+            </div>
+          </div>
 
-        <div class="actions-row">
-          <button id="saveRowBtn" type="button">Save row</button>
-          <div id="message"></div>
-        </div>
+          <div class="form-header-row">
+            <div class="form-title">Row data</div>
+            <div class="form-actions">
+              <button id="saveRowBtn" class="btn btn-primary" type="button">Save row</button>
+              <button id="clearFormBtn" class="btn btn-secondary" type="button">Clear form</button>
+              <button id="cancelEditBtn" class="btn btn-secondary" type="button" style="display:none;">Cancel edit</button>
+            </div>
+          </div>
 
-        <div class="table-wrapper">
-          <table id="dataTable"></table>
+          <form id="dataForm"></form>
+
+          <div class="status-row">
+            <div id="message"></div>
+            <div id="editIndicator" class="edit-indicator" style="display:none;"></div>
+          </div>
+
+          <div class="table-header-row">
+            <div class="row-stats" id="rowStats"></div>
+            <input
+              id="rowSearch"
+              class="table-search"
+              type="text"
+              placeholder="Search rows in this sheet..."
+            />
+          </div>
+
+          <div class="table-wrapper">
+            <table id="dataTable"></table>
+          </div>
           <div id="noDataMsg" class="no-data"></div>
-        </div>
-      </div>
-    </main>
+        </section>
+      </main>
+    </div>
   </div>
 
   <script>
-    // Configure sheets and their columns here.
+    // Sheets configuration generated from your Excel file
     const sheetsConfig = {
       "QC Sequence Number": [
         "SR NO.",
@@ -327,6 +622,7 @@
         "LOCATED BY",
         "REMARK"
       ],
+
       "MIV Sequence Number": [
         "SR NO.",
         "DATE",
@@ -336,24 +632,167 @@
         "ISSUED BY",
         "REMARK"
       ],
-      // Add the rest of your sheets here, for example:
-      // "Urgent book report": [
-      //   "SR NO.",
-      //   "UB SR NO.",
-      //   "PO NUMBER",
-      //   "SUPPLIER",
-      //   "ITEM DESCRIPTION"
-      //   // ...
-      // ],
-      // "MRV Sequence Number": [ ... ],
-      // "SES Sequence Number": [ ... ],
-      // "OSDR Sequence Number": [ ... ],
-      // "Supply Chain Department": [ ... ],
-      // "PR Sequence Number": [ ... ],
-      // "GATE PASS-POD": [ ... ],
-      // "EQUIPMENT CERTIFICATE": [ ... ],
-      // "KM Shipping Invoice": [ ... ],
-      // "INVOICE TRACKING REPORT": [ ... ]
+
+      "Urgent book report": [
+        "SR NO.",
+        "UB SR NO.",
+        "DATE",
+        "ITEM CODE",
+        "MATERIAL DESCRIPTION",
+        "UOM",
+        "QTY",
+        "Unit Value (USD)",
+        "Total Value (USD)",
+        "RESRVATION NO",
+        "WO NO.",
+        "MATERIAL DOCUMENT NUMBER",
+        "ISSUD TO",
+        "DEPARTMENT",
+        "STATUS",
+        "ISSUE DESCRIPTION",
+        "COMITTMENT ITEM",
+        "REMARKS"
+      ],
+
+      "MRV Sequence Number": [
+        "SR NO.",
+        "DATE",
+        "MRV SEQUENCE NUMBER",
+        "RETURNED BY",
+        "MATERIAL DOCUMENT NUMBER",
+        "LOCATED BY",
+        "REMARK"
+      ],
+
+      "SES Sequence Number": [
+        "SR NO.",
+        "DATE",
+        "INVOICE NUMBER",
+        "SES SEQUENCE NUMBER",
+        "PO NUMBER",
+        "ISSUED TO",
+        "REMARKS"
+      ],
+
+      "OSDR Sequence Number": [
+        "SR NO.",
+        "DATE",
+        "OSDR SEQUENCE NUMBER",
+        "OSDR TYPE",
+        "PR NUMBER",
+        "PO NUMBER",
+        "INVOICE / P.L.NO",
+        "ITEM CODE",
+        "ITEM DESCRIPTION",
+        "QTY",
+        "UNIT PRICE",
+        "TOTAL PRICE",
+        "BUYER",
+        "VENDOR / SUPPLIER",
+        "PROBLEM DESCRIPTION",
+        "ACTION / STATUS",
+        "Overseas /Local",
+        "Location",
+        "REMARKS",
+        "STATUS"
+      ],
+
+      "Supply Chain Department": [
+        "No.",
+        "Badge #",
+        "Name",
+        "Designation",
+        "Department / Sponsoring Department",
+        "Company",
+        "Department",
+        "Vac 1",
+        "Date1",
+        "Vac 2",
+        "Date 2",
+        "Vaccine Center",
+        "Booster Due",
+        "Booster Due Date",
+        "Booster",
+        "Booster Vac date",
+        "Place of Residence",
+        "Nationality",
+        "Contract Type",
+        "STAYING IN CAMP",
+        "ON / OFF",
+        "LN / E",
+        "Remark"
+      ],
+
+      "PR Sequence Number": [
+        "SR NO.",
+        "DATE",
+        "MRF SEQUENCE NUMBER",
+        "INVOICE NUMBER",
+        "PR NUMBER",
+        "ISSUED TO",
+        "LOCAL / OVERSEAS",
+        "REMARKS"
+      ],
+
+      "GATE PASS-POD": [
+        "SR NO.",
+        "DATE",
+        "GATE PASS NO.",
+        "ITEM CODE",
+        "SERIAL NUMBER",
+        "ITEM DESCRIPTION",
+        "UNIT",
+        "QTY",
+        "CONSIGNEE",
+        "INV / POD REF. NO",
+        "WORK ORDER",
+        "PR NUMBER",
+        "SENT",
+        "DELIVERED TO KM",
+        "REMARKS"
+      ],
+
+      "EQUIPMENT CERTIFICATE": [
+        "NO.",
+        "EQUIPMENT DESCRIPTION",
+        "QTY",
+        "LOCATION",
+        "CERTI NO",
+        "VENDOR",
+        "TEST DATE",
+        "EXPIRY DATE",
+        "STATUS",
+        "VARIANCE IN DAYS",
+        "REMARKS"
+      ],
+
+      "KM Shipping Invoice": [
+        "Sr No.",
+        "Date",
+        "Invoice / P.L.No:",
+        "PR Nos.",
+        "Item Description",
+        "QTY",
+        "Delivery Address / Destination",
+        "Country",
+        "Status",
+        "Remarks"
+      ],
+
+      "INVOICE TRACKING REPORT": [
+        "SR NO.",
+        "INVOICE NUMBER",
+        "PR NUMBER",
+        "PONUMBER",
+        "SUPPLIER",
+        "IAAR / WO REF. NO.",
+        "RECEIPT DATE",
+        "REQUESTED BY",
+        "DEPARTMENT",
+        "LOCAL / OVERSEAS",
+        "INSPECTED BY END-USER",
+        "REMARKS"
+      ]
     };
 
     // In-memory data store: sheet name -> array of row objects
@@ -362,48 +801,42 @@
       dataStore[name] = [];
     });
 
-    let currentSheet = null;
+    const LOCAL_STORAGE_KEY = "sheetsDataStore_v1";
 
+    // App state
+    let currentSheet = null;
+    let editIndex = null;
+    let rowSearchQuery = "";
+    let sheetSearchQuery = "";
+
+    // DOM references
     const sheetListEl = document.getElementById("sheetList");
+    const sheetsCountEl = document.getElementById("sheetsCount");
+    const sheetSearchEl = document.getElementById("sheetSearch");
+
     const sheetTitleEl = document.getElementById("sheetTitle");
+    const sheetSubtitleEl = document.getElementById("sheetSubtitle");
+    const fieldsCountTagEl = document.getElementById("fieldsCountTag");
+    const rowsCountTagEl = document.getElementById("rowsCountTag");
+    const rowStatsEl = document.getElementById("rowStats");
+
     const formEl = document.getElementById("dataForm");
     const saveRowBtn = document.getElementById("saveRowBtn");
+    const clearFormBtn = document.getElementById("clearFormBtn");
+    const cancelEditBtn = document.getElementById("cancelEditBtn");
     const messageEl = document.getElementById("message");
+    const editIndicatorEl = document.getElementById("editIndicator");
+
     const tableEl = document.getElementById("dataTable");
     const noDataMsgEl = document.getElementById("noDataMsg");
+    const rowSearchEl = document.getElementById("rowSearch");
+
     const exportJsonBtn = document.getElementById("exportJsonBtn");
     const importJsonInput = document.getElementById("importJsonInput");
-
-    function renderSheetList() {
-      sheetListEl.innerHTML = "";
-      Object.keys(sheetsConfig).forEach(name => {
-        const li = document.createElement("li");
-        const btn = document.createElement("button");
-        btn.type = "button";
-        btn.textContent = name;
-        btn.className = "sheet-btn" + (name === currentSheet ? " active" : "");
-        btn.addEventListener("click", () => selectSheet(name));
-        li.appendChild(btn);
-        sheetListEl.appendChild(li);
-      });
-    }
-
-    function selectSheet(name) {
-      currentSheet = name;
-      sheetTitleEl.textContent = name;
-      messageEl.textContent = "";
-      messageEl.className = "";
-      renderSheetList();
-      renderForm();
-      renderTable();
-    }
 
     function guessInputType(fieldName) {
       const upper = fieldName.toUpperCase();
       if (upper.includes("DATE")) return "date";
-      if (upper.includes("NO.") || upper.includes("NUMBER") || upper.includes("SEQ")) {
-        return "text"; // often IDs and sequences may start with zero
-      }
       return "text";
     }
 
@@ -418,6 +851,171 @@
       );
     }
 
+    function showMessage(text, type) {
+      messageEl.textContent = text || "";
+      messageEl.className = type ? type : "";
+    }
+
+    function setEditIndicator(index) {
+      if (index === null || index === undefined) {
+        editIndicatorEl.style.display = "none";
+        editIndicatorEl.textContent = "";
+        saveRowBtn.textContent = "Save row";
+        cancelEditBtn.style.display = "none";
+        return;
+      }
+      editIndicatorEl.style.display = "inline-flex";
+      editIndicatorEl.textContent = "Editing row #" + (index + 1);
+      saveRowBtn.textContent = "Update row";
+      cancelEditBtn.style.display = "inline-flex";
+    }
+
+    function clearForm() {
+      Array.from(formEl.elements).forEach(el => {
+        if (el.tagName === "INPUT") {
+          el.value = "";
+        }
+      });
+      editIndex = null;
+      setEditIndicator(null);
+      showMessage("", "");
+    }
+
+    function collectRowData() {
+      if (!currentSheet) return null;
+      const fields = sheetsConfig[currentSheet] || [];
+      const row = {};
+      let hasAnyValue = false;
+
+      fields.forEach((fieldName, index) => {
+        const id = fieldId(fieldName, index);
+        const input = document.getElementById(id);
+        const rawValue = input && input.value != null ? input.value : "";
+        const value = typeof rawValue === "string" ? rawValue.trim() : rawValue;
+        if (value !== "") {
+          hasAnyValue = true;
+        }
+        row[fieldName] = value;
+      });
+
+      return { row, hasAnyValue };
+    }
+
+    function populateFormFromRow(row) {
+      if (!currentSheet || !row) return;
+      const fields = sheetsConfig[currentSheet] || [];
+      fields.forEach((fieldName, index) => {
+        const id = fieldId(fieldName, index);
+        const input = document.getElementById(id);
+        if (input) {
+          input.value = row[fieldName] ?? "";
+        }
+      });
+    }
+
+    // Local storage
+
+    function saveToLocalStorage() {
+      try {
+        const payload = JSON.stringify(dataStore);
+        window.localStorage.setItem(LOCAL_STORAGE_KEY, payload);
+      } catch (err) {
+        console.warn("Failed to save to localStorage:", err);
+      }
+    }
+
+    function loadFromLocalStorage() {
+      try {
+        const raw = window.localStorage.getItem(LOCAL_STORAGE_KEY);
+        if (!raw) return;
+        const parsed = JSON.parse(raw);
+        Object.keys(sheetsConfig).forEach(sheetName => {
+          if (Array.isArray(parsed[sheetName])) {
+            dataStore[sheetName] = parsed[sheetName];
+          }
+        });
+      } catch (err) {
+        console.warn("Failed to load from localStorage:", err);
+      }
+    }
+
+    // Sheet list
+
+    function renderSheetList() {
+      const allSheetNames = Object.keys(sheetsConfig);
+      sheetsCountEl.textContent = allSheetNames.length + " sheets";
+
+      const filtered = allSheetNames.filter(name =>
+        name.toLowerCase().includes(sheetSearchQuery.toLowerCase())
+      );
+
+      sheetListEl.innerHTML = "";
+      filtered.forEach(name => {
+        const li = document.createElement("li");
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className =
+          "sheet-btn" + (name === currentSheet ? " active" : "");
+        const spanName = document.createElement("span");
+        spanName.className = "name";
+        spanName.textContent = name;
+        const spanCount = document.createElement("span");
+        spanCount.className = "fields-count";
+        spanCount.textContent =
+          (sheetsConfig[name] ? sheetsConfig[name].length : 0) + " fields";
+        btn.appendChild(spanName);
+        btn.appendChild(spanCount);
+        btn.addEventListener("click", () => selectSheet(name));
+        li.appendChild(btn);
+        sheetListEl.appendChild(li);
+      });
+
+      if (!filtered.length) {
+        const li = document.createElement("li");
+        li.style.fontSize = "12px";
+        li.style.color = "#9ca3af";
+        li.textContent = "No sheets match your search.";
+        sheetListEl.appendChild(li);
+      }
+    }
+
+    function selectSheet(name) {
+      currentSheet = name;
+      editIndex = null;
+      setEditIndicator(null);
+      rowSearchQuery = "";
+      rowSearchEl.value = "";
+      showMessage("", "");
+      renderSheetList();
+      renderForm();
+      renderSheetHeaderSummary();
+      renderTable();
+    }
+
+    function renderSheetHeaderSummary() {
+      if (!currentSheet) {
+        sheetTitleEl.textContent = "Select a sheet from the right sidebar";
+        sheetSubtitleEl.textContent =
+          "Sheet fields and names are automatically generated from your Excel file.";
+        fieldsCountTagEl.textContent = "0 fields";
+        rowsCountTagEl.textContent = "0 rows";
+        rowStatsEl.textContent = "";
+        return;
+      }
+      const fields = sheetsConfig[currentSheet] || [];
+      const rows = dataStore[currentSheet] || [];
+      sheetTitleEl.textContent = currentSheet;
+      sheetSubtitleEl.textContent =
+        "This sheet has " +
+        fields.length +
+        " fields. Use the form to add or edit rows.";
+      fieldsCountTagEl.textContent = fields.length + " fields";
+      rowsCountTagEl.textContent = rows.length + " rows total";
+      rowStatsEl.textContent = "Total rows: " + rows.length;
+    }
+
+    // Form
+
     function renderForm() {
       formEl.innerHTML = "";
       if (!currentSheet) return;
@@ -430,8 +1028,7 @@
         const label = document.createElement("label");
         label.textContent = fieldName;
         const input = document.createElement("input");
-        const type = guessInputType(fieldName);
-        input.type = type;
+        input.type = guessInputType(fieldName);
         input.id = fieldId(fieldName, index);
         input.name = input.id;
 
@@ -441,22 +1038,63 @@
       });
     }
 
+    // Table
+
+    function getFilteredRows() {
+      if (!currentSheet) return [];
+      const rows = dataStore[currentSheet] || [];
+      if (!rowSearchQuery.trim()) return rows;
+
+      const query = rowSearchQuery.toLowerCase();
+      const fields = sheetsConfig[currentSheet] || [];
+      return rows.filter(row =>
+        fields.some(fieldName => {
+          const value = row[fieldName];
+          if (value == null) return false;
+          return String(value).toLowerCase().includes(query);
+        })
+      );
+    }
+
     function renderTable() {
       tableEl.innerHTML = "";
       noDataMsgEl.textContent = "";
 
       if (!currentSheet) return;
 
-      const rows = dataStore[currentSheet] || [];
       const fields = sheetsConfig[currentSheet] || [];
+      const allRows = dataStore[currentSheet] || [];
+      const rows = getFilteredRows();
+
+      const total = allRows.length;
+      const visible = rows.length;
+
+      rowsCountTagEl.textContent = total + " rows total";
+      if (rowSearchQuery.trim()) {
+        rowStatsEl.textContent =
+          "Showing " +
+          visible +
+          " of " +
+          total +
+          " rows (filtered by search).";
+      } else {
+        rowStatsEl.textContent = "Total rows: " + total;
+      }
 
       if (!fields.length) {
-        noDataMsgEl.textContent = "No fields are defined for this sheet in the code.";
+        noDataMsgEl.textContent =
+          "No fields are defined for this sheet in the code.";
         return;
       }
 
       if (!rows.length) {
-        noDataMsgEl.textContent = "No data entered for this sheet yet.";
+        if (total === 0) {
+          noDataMsgEl.textContent =
+            "No data entered for this sheet yet. Add a row using the form above.";
+        } else {
+          noDataMsgEl.textContent =
+            "No rows match your search. Clear the search to see all rows.";
+        }
         return;
       }
 
@@ -468,23 +1106,91 @@
         th.textContent = fieldName;
         headerRow.appendChild(th);
       });
+
+      const actionsTh = document.createElement("th");
+      actionsTh.textContent = "Actions";
+      headerRow.appendChild(actionsTh);
+
       thead.appendChild(headerRow);
       tableEl.appendChild(thead);
 
       const tbody = document.createElement("tbody");
       rows.forEach(row => {
+        // We need the real index in allRows, not the filtered index
+        const realIndex = allRows.indexOf(row);
         const tr = document.createElement("tr");
+
         fields.forEach(fieldName => {
           const td = document.createElement("td");
-          td.textContent = row[fieldName] ?? "";
+          const v = row[fieldName];
+          td.textContent = v == null ? "" : String(v);
           tr.appendChild(td);
         });
+
+        const actionsTd = document.createElement("td");
+        const actionsDiv = document.createElement("div");
+        actionsDiv.className = "table-actions";
+
+        const editBtn = document.createElement("button");
+        editBtn.type = "button";
+        editBtn.className = "table-btn table-btn-edit";
+        editBtn.textContent = "Edit";
+        editBtn.addEventListener("click", () => {
+          startEditRow(realIndex);
+        });
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.type = "button";
+        deleteBtn.className = "table-btn table-btn-delete";
+        deleteBtn.textContent = "Delete";
+        deleteBtn.addEventListener("click", () => {
+          deleteRow(realIndex);
+        });
+
+        actionsDiv.appendChild(editBtn);
+        actionsDiv.appendChild(deleteBtn);
+        actionsTd.appendChild(actionsDiv);
+        tr.appendChild(actionsTd);
+
         tbody.appendChild(tr);
       });
+
       tableEl.appendChild(tbody);
     }
 
-    function saveRow() {
+    function startEditRow(index) {
+      if (!currentSheet) return;
+      const rows = dataStore[currentSheet] || [];
+      if (index < 0 || index >= rows.length) return;
+      editIndex = index;
+      populateFormFromRow(rows[index]);
+      setEditIndicator(index);
+      showMessage("You are editing an existing row. Update fields and click \"Update row\".", "success");
+    }
+
+    function deleteRow(index) {
+      if (!currentSheet) return;
+      const rows = dataStore[currentSheet] || [];
+      if (index < 0 || index >= rows.length) return;
+
+      const confirmed = window.confirm("Delete row #" + (index + 1) + " ?");
+      if (!confirmed) return;
+
+      rows.splice(index, 1);
+      if (editIndex === index) {
+        clearForm();
+      } else if (editIndex !== null && index < editIndex) {
+        editIndex -= 1;
+      }
+      saveToLocalStorage();
+      renderSheetHeaderSummary();
+      renderTable();
+      showMessage("Row deleted.", "success");
+    }
+
+    // Actions
+
+    function handleSaveRow() {
       if (!currentSheet) {
         showMessage("Please select a sheet first.", "error");
         return;
@@ -496,57 +1202,57 @@
         return;
       }
 
-      const newRow = {};
-      let hasAnyValue = false;
+      const result = collectRowData();
+      if (!result) {
+        showMessage("Unexpected error reading form fields.", "error");
+        return;
+      }
 
-      fields.forEach((fieldName, index) => {
-        const id = fieldId(fieldName, index);
-        const input = document.getElementById(id);
-        const value = (input && input.value != null) ? input.value.trim() : "";
-        if (value !== "") {
-          hasAnyValue = true;
-        }
-        newRow[fieldName] = value;
-      });
-
+      const { row, hasAnyValue } = result;
       if (!hasAnyValue) {
         showMessage("Please fill at least one field before saving.", "error");
         return;
       }
 
-      dataStore[currentSheet].push(newRow);
+      const rows = dataStore[currentSheet];
 
-      fields.forEach((fieldName, index) => {
-        const id = fieldId(fieldName, index);
-        const input = document.getElementById(id);
-        if (input) input.value = "";
-      });
+      if (editIndex === null || editIndex === undefined) {
+        // New row
+        rows.push(row);
+        showMessage("Row saved successfully.", "success");
+      } else {
+        // Update existing row
+        rows[editIndex] = row;
+        showMessage("Row updated successfully.", "success");
+      }
 
+      clearForm();
+      saveToLocalStorage();
+      renderSheetHeaderSummary();
       renderTable();
-      showMessage("Row saved successfully.", "success");
     }
 
-    function showMessage(text, type) {
-      messageEl.textContent = text;
-      messageEl.className = type ? type : "";
+    function handleExportJson() {
+      try {
+        const blob = new Blob([JSON.stringify(dataStore, null, 2)], {
+          type: "application/json"
+        });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "sheets-data.json";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showMessage("Data exported as JSON.", "success");
+      } catch (err) {
+        console.error(err);
+        showMessage("Error exporting JSON.", "error");
+      }
     }
 
-    function exportJson() {
-      const blob = new Blob([JSON.stringify(dataStore, null, 2)], {
-        type: "application/json"
-      });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "sheets-data.json";
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-      showMessage("Data exported as JSON.", "success");
-    }
-
-    function importJson(event) {
+    function handleImportJson(event) {
       const file = event.target.files[0];
       if (!file) return;
 
@@ -555,14 +1261,23 @@
         try {
           const imported = JSON.parse(e.target.result);
 
+          let importedSheetsCount = 0;
           Object.keys(sheetsConfig).forEach(sheetName => {
             if (Array.isArray(imported[sheetName])) {
               dataStore[sheetName] = imported[sheetName];
+              importedSheetsCount += 1;
             }
           });
 
+          saveToLocalStorage();
+          renderSheetHeaderSummary();
           renderTable();
-          showMessage("Data imported from JSON.", "success");
+          showMessage(
+            "Data imported from JSON for " +
+              importedSheetsCount +
+              " sheet(s).",
+            "success"
+          );
         } catch (err) {
           console.error(err);
           showMessage("Error reading JSON file.", "error");
@@ -573,15 +1288,38 @@
       reader.readAsText(file);
     }
 
-    saveRowBtn.addEventListener("click", saveRow);
-    exportJsonBtn.addEventListener("click", exportJson);
-    importJsonInput.addEventListener("change", importJson);
+    // Event bindings
+
+    saveRowBtn.addEventListener("click", handleSaveRow);
+    clearFormBtn.addEventListener("click", clearForm);
+    cancelEditBtn.addEventListener("click", () => {
+      clearForm();
+      showMessage("Edit cancelled.", "success");
+    });
+
+    exportJsonBtn.addEventListener("click", handleExportJson);
+    importJsonInput.addEventListener("change", handleImportJson);
+
+    rowSearchEl.addEventListener("input", e => {
+      rowSearchQuery = e.target.value || "";
+      renderTable();
+    });
+
+    sheetSearchEl.addEventListener("input", e => {
+      sheetSearchQuery = e.target.value || "";
+      renderSheetList();
+    });
+
+    // Initial load
 
     window.addEventListener("load", () => {
+      loadFromLocalStorage();
       renderSheetList();
       const first = Object.keys(sheetsConfig)[0];
       if (first) {
         selectSheet(first);
+      } else {
+        renderSheetHeaderSummary();
       }
     });
   </script>
