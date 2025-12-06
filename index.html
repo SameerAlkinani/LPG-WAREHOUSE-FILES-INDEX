@@ -5,7 +5,7 @@
   <title>Reports Management Console</title>
   <style>
     /* =========================
-       THEME VARIABLES
+       THEME VARIABLES (BASE)
        ========================= */
     :root {
       --bg-body: #0f172a;
@@ -34,6 +34,7 @@
       --modal-bg: #f9fafb;
     }
 
+    /* DARK */
     body.theme-dark {
       --bg-body: #020617;
       --bg-header: radial-gradient(circle at 0% 0%, #22c55e 0, #0f172a 38%, #020617 80%);
@@ -61,33 +62,7 @@
       --modal-bg: #020617;
     }
 
-    body.theme-ocean {
-      --bg-body: #020617;
-      --bg-header: linear-gradient(90deg, #0f172a, #0ea5e9);
-      --bg-sidebar: #020617;
-      --bg-main-card: #020617;
-      --bg-table: #0f172a;
-      --bg-table-alt: #020617;
-      --bg-table-hover: #1e293b;
-      --bg-th: #0b1120;
-      --text-main: #e5e7eb;
-      --text-muted: #9ca3af;
-      --text-inverse: #e5e7eb;
-      --border-subtle: #1e293b;
-      --accent: #0ea5e9;
-      --accent-soft: #0b1120;
-      --danger: #fb7185;
-      --danger-soft: #7f1d1d;
-      --success: #22c55e;
-      --pill-bg: #020617;
-      --pill-border: #1d4ed8;
-      --scroll-track: #020617;
-      --scroll-thumb: #38bdf8;
-      --input-bg: #020617;
-      --input-border: #1f2937;
-      --modal-bg: #020617;
-    }
-
+    /* LIGHT */
     body.theme-light {
       --bg-body: #f3f4f6;
       --bg-header: linear-gradient(90deg, #ffffff, #e5e7eb);
@@ -115,7 +90,91 @@
       --modal-bg: #ffffff;
     }
 
-    /* Default theme */
+    /* OCEAN */
+    body.theme-ocean {
+      --bg-body: #020617;
+      --bg-header: linear-gradient(90deg, #0f172a, #0ea5e9);
+      --bg-sidebar: #020617;
+      --bg-main-card: #020617;
+      --bg-table: #0f172a;
+      --bg-table-alt: #020617;
+      --bg-table-hover: #1e293b;
+      --bg-th: #0b1120;
+      --text-main: #e5e7eb;
+      --text-muted: #9ca3af;
+      --text-inverse: #e5e7eb;
+      --border-subtle: #1e293b;
+      --accent: #0ea5e9;
+      --accent-soft: #0b1120;
+      --danger: #fb7185;
+      --danger-soft: #7f1d1d;
+      --success: #22c55e;
+      --pill-bg: #020617;
+      --pill-border: #1d4ed8;
+      --scroll-track: #020617;
+      --scroll-thumb: #38bdf8;
+      --input-bg: #020617;
+      --input-border: #1f2937;
+      --modal-bg: #020617;
+    }
+
+    /* FOREST */
+    body.theme-forest {
+      --bg-body: #022c22;
+      --bg-header: linear-gradient(90deg, #022c22, #16a34a);
+      --bg-sidebar: #022c22;
+      --bg-main-card: #022c22;
+      --bg-table: #064e3b;
+      --bg-table-alt: #022c22;
+      --bg-table-hover: #14532d;
+      --bg-th: #064e3b;
+      --text-main: #e5f3eb;
+      --text-muted: #a7f3d0;
+      --text-inverse: #e5f3eb;
+      --border-subtle: #0f766e;
+      --accent: #22c55e;
+      --accent-soft: #022c22;
+      --danger: #fb7185;
+      --danger-soft: #7f1d1d;
+      --success: #4ade80;
+      --pill-bg: #022c22;
+      --pill-border: #16a34a;
+      --scroll-track: #022c22;
+      --scroll-thumb: #16a34a;
+      --input-bg: #022c22;
+      --input-border: #16a34a;
+      --modal-bg: #022c22;
+    }
+
+    /* SUNSET */
+    body.theme-sunset {
+      --bg-body: #111827;
+      --bg-header: linear-gradient(90deg, #7c2d12, #db2777);
+      --bg-sidebar: #111827;
+      --bg-main-card: #111827;
+      --bg-table: #1f2937;
+      --bg-table-alt: #020617;
+      --bg-table-hover: #312e81;
+      --bg-th: #1f2937;
+      --text-main: #f9fafb;
+      --text-muted: #e5e7eb;
+      --text-inverse: #f9fafb;
+      --border-subtle: #312e81;
+      --accent: #f97316;
+      --accent-soft: #1f2937;
+      --danger: #fb7185;
+      --danger-soft: #7f1d1d;
+      --success: #22c55e;
+      --pill-bg: #020617;
+      --pill-border: #f97316;
+      --scroll-track: #020617;
+      --scroll-thumb: #f97316;
+      --input-bg: #020617;
+      --input-border: #4b5563;
+      --modal-bg: #020617;
+    }
+
+    /* ======= GLOBAL ======= */
     body {
       margin: 0;
       background: var(--bg-body);
@@ -194,7 +253,7 @@
       font-size: 11px;
       color: var(--text-muted);
       text-align: right;
-      max-width: 320px;
+      max-width: 340px;
     }
 
     .pill {
@@ -442,7 +501,7 @@
       padding: 16px;
       display: flex;
       flex-direction: column;
-      overflow: hidden;
+      overflow: auto; /* الصفحة كلها هي التي تتحرك */
     }
 
     .main-card {
@@ -605,12 +664,12 @@
 
     .table-wrapper {
       margin-top: 6px;
-      overflow-x: auto !important;
-      overflow-y: auto !important;
+      overflow-x: auto;     /* أفقي فقط */
+      overflow-y: visible;  /* لا سكروول عمودي داخلي */
       border-radius: 12px;
       border: 1px solid var(--border-subtle);
       background: var(--bg-table-alt);
-      max-height: calc(100vh - 320px);
+      /* لا max-height: نسمح للصفحة أن تطول */
     }
 
     table {
@@ -860,7 +919,7 @@
         min-height: auto;
       }
       .table-wrapper {
-        max-height: none;
+        overflow-x: auto;
       }
     }
   </style>
@@ -884,6 +943,8 @@
             <option value="dark">Dark</option>
             <option value="light">Light</option>
             <option value="ocean">Ocean</option>
+            <option value="forest">Forest</option>
+            <option value="sunset">Sunset</option>
           </select>
         </div>
         <div>Use JSON & CSV export for backup, sharing, and analytics.</div>
@@ -1040,7 +1101,7 @@
   </div>
 
   <script>
-    // ===== SHEETS CONFIG (same structure as Excel / JSON) =====
+    /* ===== SHEETS CONFIG ===== */
     const sheetsConfig = {
       "QC Sequence Number": [
         "SR NO.",
@@ -1051,7 +1112,6 @@
         "LOCATED BY",
         "REMARK"
       ],
-
       "MIV Sequence Number": [
         "SR NO.",
         "DATE",
@@ -1061,7 +1121,6 @@
         "ISSUED BY",
         "REMARK"
       ],
-
       "Urgent book report": [
         "SR NO.",
         "UB SR NO.",
@@ -1082,7 +1141,6 @@
         "COMITTMENT ITEM",
         "REMARKS"
       ],
-
       "MRV Sequence Number": [
         "SR NO.",
         "DATE",
@@ -1092,7 +1150,6 @@
         "LOCATED BY",
         "REMARK"
       ],
-
       "SES Sequence Number": [
         "SR NO.",
         "DATE",
@@ -1102,7 +1159,6 @@
         "ISSUED TO",
         "REMARKS"
       ],
-
       "OSDR Sequence Number": [
         "SR NO.",
         "DATE",
@@ -1125,7 +1181,6 @@
         "REMARKS",
         "STATUS"
       ],
-
       "Supply Chain Department": [
         "No.",
         "Badge #",
@@ -1151,7 +1206,6 @@
         "LN / E",
         "Remark"
       ],
-
       "PR Sequence Number": [
         "SR NO.",
         "DATE",
@@ -1162,7 +1216,6 @@
         "LOCAL / OVERSEAS",
         "REMARKS"
       ],
-
       "GATE PASS-POD": [
         "SR NO.",
         "DATE",
@@ -1180,7 +1233,6 @@
         "DELIVERED TO KM",
         "REMARKS"
       ],
-
       "EQUIPMENT CERTIFICATE": [
         "NO.",
         "EQUIPMENT DESCRIPTION",
@@ -1194,7 +1246,6 @@
         "VARIANCE IN DAYS",
         "REMARKS"
       ],
-
       "KM Shipping Invoice": [
         "Sr No.",
         "Date",
@@ -1207,7 +1258,6 @@
         "Status",
         "Remarks"
       ],
-
       "INVOICE TRACKING REPORT": [
         "SR NO.",
         "INVOICE NUMBER",
@@ -1224,15 +1274,14 @@
       ]
     };
 
-    // ========== DATA STORE ==========
-
+    /* ===== DATA STORE & STATE ===== */
     const dataStore = {};
     Object.keys(sheetsConfig).forEach((name) => {
       dataStore[name] = [];
     });
 
-    const LOCAL_STORAGE_KEY = "reportsConsoleStore_v3";
-    const THEME_STORAGE_KEY = "reportsConsoleTheme_v1";
+    const LOCAL_STORAGE_KEY = "reportsConsoleStore_v4";
+    const THEME_STORAGE_KEY = "reportsConsoleTheme_v2";
 
     let currentSheet = null;
     let editIndex = null;
@@ -1243,7 +1292,7 @@
     let sortField = null;
     let sortDirection = "asc";
 
-    // DOM references
+    // DOM
     const sheetListEl = document.getElementById("sheetList");
     const sheetsCountEl = document.getElementById("sheetsCount");
     const sheetSearchEl = document.getElementById("sheetSearch");
@@ -1282,15 +1331,16 @@
 
     const themeSelectEl = document.getElementById("themeSelect");
 
-    // ===== Theme handling =====
-
+    /* ===== THEME ===== */
     function applyTheme(theme) {
-      const allowed = ["dark", "light", "ocean"];
+      const allowed = ["dark", "light", "ocean", "forest", "sunset"];
       const chosen = allowed.includes(theme) ? theme : "dark";
       document.body.classList.remove(
         "theme-dark",
         "theme-light",
-        "theme-ocean"
+        "theme-ocean",
+        "theme-forest",
+        "theme-sunset"
       );
       document.body.classList.add("theme-" + chosen);
       themeSelectEl.value = chosen;
@@ -1301,8 +1351,7 @@
       }
     }
 
-    // ===== Helpers =====
-
+    /* ===== HELPERS ===== */
     function guessInputType(fieldName) {
       const upper = fieldName.toUpperCase();
       if (upper.includes("DATE")) return "date";
@@ -1384,8 +1433,7 @@
       });
     }
 
-    // ===== Modal =====
-
+    /* ===== MODAL ===== */
     function openModal(mode, index) {
       if (!currentSheet) {
         showMessage("Please select a sheet first.", "error");
@@ -1411,8 +1459,7 @@
       rowModalEl.style.display = "none";
     }
 
-    // ===== Local storage =====
-
+    /* ===== LOCAL STORAGE ===== */
     function saveToLocalStorage() {
       try {
         const payload = JSON.stringify(dataStore);
@@ -1441,8 +1488,7 @@
       }
     }
 
-    // ===== Sheet list =====
-
+    /* ===== SHEET LIST ===== */
     function renderSheetList() {
       const allSheetNames = Object.keys(sheetsConfig);
       sheetsCountEl.textContent = allSheetNames.length + " sheets";
@@ -1519,8 +1565,7 @@
       rowStatsEl.textContent = "Total rows: " + rows.length;
     }
 
-    // ===== Form rendering =====
-
+    /* ===== FORM RENDERING ===== */
     function renderForm() {
       formEl.innerHTML = "";
       if (!currentSheet) return;
@@ -1543,8 +1588,7 @@
       });
     }
 
-    // ===== Sorting & filtering =====
-
+    /* ===== SORT / FILTER ===== */
     function compareValues(a, b) {
       if (a === null || a === undefined) a = "";
       if (b === null || b === undefined) b = "";
@@ -1583,8 +1627,7 @@
       return result;
     }
 
-    // ===== Pagination =====
-
+    /* ===== PAGINATION ===== */
     function renderPagination(filteredRows) {
       if (!currentSheet) {
         paginationEl.innerHTML = "";
@@ -1652,8 +1695,7 @@
       paginationEl.appendChild(container);
     }
 
-    // ===== Table =====
-
+    /* ===== TABLE ===== */
     function renderTable() {
       tableEl.innerHTML = "";
       noDataMsgEl.textContent = "";
@@ -1818,8 +1860,7 @@
       showMessage("Row deleted.", "success");
     }
 
-    // ===== Actions =====
-
+    /* ===== ACTIONS ===== */
     function handleSaveRow() {
       if (!currentSheet) {
         showMessage("Please select a sheet first.", "error");
@@ -1902,9 +1943,7 @@
           renderSheetHeaderSummary();
           renderTable();
           showMessage(
-            "Data imported from JSON for " +
-              importedSheetsCount +
-              " sheet(s).",
+            "Data imported from JSON for " + importedSheetsCount + " sheet(s).",
             "success"
           );
         } catch (err) {
@@ -2011,8 +2050,7 @@
       showMessage("Current sheet cleared.", "success");
     }
 
-    // ===== Event bindings =====
-
+    /* ===== EVENT BINDINGS ===== */
     saveRowBtn.addEventListener("click", handleSaveRow);
     clearFormBtn.addEventListener("click", clearForm);
     cancelEditBtn.addEventListener("click", () => {
@@ -2059,10 +2097,8 @@
       applyTheme(e.target.value);
     });
 
-    // ===== Initial load =====
-
+    /* ===== INITIAL LOAD ===== */
     window.addEventListener("load", () => {
-      // Theme
       try {
         const storedTheme = localStorage.getItem(THEME_STORAGE_KEY) || "dark";
         applyTheme(storedTheme);
