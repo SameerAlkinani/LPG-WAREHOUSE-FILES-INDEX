@@ -51,7 +51,7 @@
     .app-body {
       flex: 1;
       display: flex;
-      flex-direction: row-reverse; /* sidebar on the right */
+      flex-direction: row; /* sidebar on the LEFT */
       min-height: calc(100vh - 52px);
     }
 
@@ -65,7 +65,7 @@
       display: flex;
       flex-direction: column;
       gap: 12px;
-      border-left: 1px solid #1f2937;
+      border-right: 1px solid #1f2937;
     }
 
     .sidebar-section-title {
@@ -116,7 +116,7 @@
       border-radius: 6px;
       background: #111827;
       color: #e5e7eb;
-      text-align: right;
+      text-align: left;
       cursor: pointer;
       font-size: 12px;
       display: flex;
@@ -340,11 +340,6 @@
       color: #374151;
     }
 
-    .field-hint {
-      font-size: 11px;
-      color: #9ca3af;
-    }
-
     input[type="text"],
     input[type="number"],
     input[type="date"] {
@@ -495,7 +490,7 @@
       }
       .sidebar {
         width: 100%;
-        border-left: none;
+        border-right: none;
         border-bottom: 1px solid #1f2937;
       }
       .main-card {
@@ -513,12 +508,12 @@
       </div>
       <div class="app-header-right">
         <div>Data is also saved locally in your browser (localStorage).</div>
-        <div>JSON export is ideal for backup or sharing.</div>
+        <div>Use JSON export/import for full Excel backup and restore.</div>
       </div>
     </header>
 
     <div class="app-body">
-      <!-- Sidebar on the right -->
+      <!-- Sidebar on the LEFT -->
       <aside class="sidebar">
         <div>
           <div class="sidebar-section-title">
@@ -552,12 +547,12 @@
         </div>
       </aside>
 
-      <!-- Main area on the left -->
+      <!-- Main area on the right -->
       <main class="main">
         <section class="main-card">
           <div class="main-header">
             <div class="main-header-left">
-              <h2 id="sheetTitle" class="main-header-title">Select a sheet from the right sidebar</h2>
+              <h2 id="sheetTitle" class="main-header-title">Select a sheet from the left sidebar</h2>
               <div id="sheetSubtitle" class="main-header-sub">
                 Sheet fields and names are automatically generated from your Excel file.
               </div>
@@ -611,7 +606,7 @@
   </div>
 
   <script>
-    // Sheets configuration generated from your Excel file
+    // Sheets configuration based on your Excel file (columns names cleaned from extra spaces)
     const sheetsConfig = {
       "QC Sequence Number": [
         "SR NO.",
@@ -697,7 +692,7 @@
         "STATUS"
       ],
 
-      "Supply Chain Department": [
+      "Supply Chain Department ": [
         "No.",
         "Badge #",
         "Name",
@@ -803,7 +798,6 @@
 
     const LOCAL_STORAGE_KEY = "sheetsDataStore_v1";
 
-    // App state
     let currentSheet = null;
     let editIndex = null;
     let rowSearchQuery = "";
@@ -994,7 +988,7 @@
 
     function renderSheetHeaderSummary() {
       if (!currentSheet) {
-        sheetTitleEl.textContent = "Select a sheet from the right sidebar";
+        sheetTitleEl.textContent = "Select a sheet from the left sidebar";
         sheetSubtitleEl.textContent =
           "Sheet fields and names are automatically generated from your Excel file.";
         fieldsCountTagEl.textContent = "0 fields";
@@ -1116,7 +1110,6 @@
 
       const tbody = document.createElement("tbody");
       rows.forEach(row => {
-        // We need the real index in allRows, not the filtered index
         const realIndex = allRows.indexOf(row);
         const tr = document.createElement("tr");
 
@@ -1165,7 +1158,10 @@
       editIndex = index;
       populateFormFromRow(rows[index]);
       setEditIndicator(index);
-      showMessage("You are editing an existing row. Update fields and click \"Update row\".", "success");
+      showMessage(
+        "You are editing an existing row. Update fields and click \"Update row\".",
+        "success"
+      );
     }
 
     function deleteRow(index) {
@@ -1217,11 +1213,9 @@
       const rows = dataStore[currentSheet];
 
       if (editIndex === null || editIndex === undefined) {
-        // New row
         rows.push(row);
         showMessage("Row saved successfully.", "success");
       } else {
-        // Update existing row
         rows[editIndex] = row;
         showMessage("Row updated successfully.", "success");
       }
