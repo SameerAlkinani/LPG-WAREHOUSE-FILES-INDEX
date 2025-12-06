@@ -342,11 +342,18 @@
 
     .sheet-toolbar {
       display: flex;
-      justify-content: flex-end;
+      justify-content: space-between;
       align-items: center;
       gap: 8px;
       flex-wrap: wrap;
       font-size: 11px;
+    }
+
+    .sheet-toolbar-left {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
     }
 
     .btn-outline {
@@ -369,74 +376,7 @@
       background: #f97373;
     }
 
-    /* Form */
-
-    .form-header-row {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      margin-top: 4px;
-    }
-
-    .form-title {
-      font-size: 14px;
-      font-weight: 600;
-      color: #111827;
-    }
-
-    .form-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      align-items: center;
-    }
-
-    .btn-secondary {
-      background: #e5e7eb;
-      color: #111827;
-      border: 1px solid #d4d4d8;
-    }
-
-    .btn-secondary:hover {
-      background: #d1d5db;
-    }
-
-    form {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-      gap: 10px 16px;
-      margin-top: 6px;
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      font-size: 13px;
-    }
-
-    label {
-      font-weight: 500;
-      color: #374151;
-    }
-
-    input[type="text"],
-    input[type="number"],
-    input[type="date"] {
-      padding: 7px 8px;
-      border-radius: 9px;
-      border: 1px solid #d1d5db;
-      font-size: 13px;
-      background: #ffffff;
-    }
-
-    input:focus {
-      outline: none;
-      border-color: #3b82f6;
-      box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.3);
-    }
+    /* Status */
 
     .status-row {
       display: flex;
@@ -639,6 +579,108 @@
       cursor: default;
     }
 
+    /* Modal */
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.6);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 60;
+      padding: 16px;
+    }
+
+    .modal-card {
+      background: #f9fafb;
+      border-radius: 16px;
+      max-width: 900px;
+      width: 100%;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.65);
+      border: 1px solid #e5e7eb;
+    }
+
+    .modal-header {
+      padding: 12px 16px;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .modal-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: #111827;
+    }
+
+    .modal-close-btn {
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      font-size: 16px;
+      line-height: 1;
+      color: #6b7280;
+      border-radius: 999px;
+      padding: 4px 6px;
+    }
+
+    .modal-close-btn:hover {
+      background: #e5e7eb;
+    }
+
+    .modal-body {
+      padding: 12px 16px 6px 16px;
+      overflow-y: auto;
+    }
+
+    .modal-footer {
+      padding: 10px 16px 12px 16px;
+      border-top: 1px solid #e5e7eb;
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    form {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 10px 16px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 13px;
+    }
+
+    label {
+      font-weight: 500;
+      color: #374151;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="date"] {
+      padding: 7px 8px;
+      border-radius: 9px;
+      border: 1px solid #d1d5db;
+      font-size: 13px;
+      background: #ffffff;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.3);
+    }
+
     @media (max-width: 900px) {
       .app-body {
         flex-direction: column;
@@ -731,51 +773,36 @@
                   <span id="rowsCountTag">0 rows</span>
                 </span>
               </div>
-              <div>Use the form below to add or edit rows in the active sheet.</div>
+              <div>Use the table and actions to manage rows per sheet.</div>
             </div>
           </div>
 
           <div class="sheet-toolbar">
-            <button
-              id="exportSheetJsonBtn"
-              class="btn btn-outline"
-              type="button"
-            >
-              Export current sheet as JSON
-            </button>
-            <button
-              id="exportSheetCsvBtn"
-              class="btn btn-outline"
-              type="button"
-            >
-              Export current sheet as CSV
-            </button>
-            <button id="clearSheetBtn" class="btn btn-danger" type="button">
-              Clear current sheet
-            </button>
-          </div>
-
-          <div class="form-header-row">
-            <div class="form-title">Row data</div>
-            <div class="form-actions">
-              <button id="saveRowBtn" class="btn btn-primary" type="button">
-                Save row
+            <div class="sheet-toolbar-left">
+              <button id="openAddRowBtn" class="btn btn-primary" type="button">
+                Add row
               </button>
-              <button id="clearFormBtn" class="btn btn-secondary" type="button">
-                Clear form
+            </div>
+            <div class="sheet-toolbar-left">
+              <button
+                id="exportSheetJsonBtn"
+                class="btn btn-outline"
+                type="button"
+              >
+                Export current sheet as JSON
               </button>
               <button
-                id="cancelEditBtn"
-                class="btn btn-secondary"
+                id="exportSheetCsvBtn"
+                class="btn btn-outline"
                 type="button"
-                style="display: none"
               >
-                Cancel edit
+                Export current sheet as CSV
+              </button>
+              <button id="clearSheetBtn" class="btn btn-danger" type="button">
+                Clear current sheet
               </button>
             </div>
           </div>
-
-          <form id="dataForm"></form>
 
           <div class="status-row">
             <div id="message"></div>
@@ -812,6 +839,30 @@
           <div id="pagination" class="pagination"></div>
         </section>
       </main>
+    </div>
+  </div>
+
+  <!-- Modal for add/edit row -->
+  <div id="rowModal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div id="modalTitle" class="modal-title">Add new row</div>
+        <button id="closeModalBtn" class="modal-close-btn" type="button">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="dataForm"></form>
+      </div>
+      <div class="modal-footer">
+        <button id="saveRowBtn" class="btn btn-primary" type="button">
+          Save row
+        </button>
+        <button id="clearFormBtn" class="btn btn-secondary" type="button">
+          Clear form
+        </button>
+        <button id="cancelEditBtn" class="btn btn-secondary" type="button">
+          Cancel
+        </button>
+      </div>
     </div>
   </div>
 
@@ -1006,7 +1057,7 @@
       dataStore[name] = [];
     });
 
-    const LOCAL_STORAGE_KEY = "reportsConsoleStore_v1";
+    const LOCAL_STORAGE_KEY = "reportsConsoleStore_v2";
 
     let currentSheet = null;
     let editIndex = null;
@@ -1035,6 +1086,11 @@
     const messageEl = document.getElementById("message");
     const editIndicatorEl = document.getElementById("editIndicator");
     const autosaveIndicatorEl = document.getElementById("autosaveIndicator");
+
+    const openAddRowBtn = document.getElementById("openAddRowBtn");
+    const rowModalEl = document.getElementById("rowModal");
+    const modalTitleEl = document.getElementById("modalTitle");
+    const closeModalBtn = document.getElementById("closeModalBtn");
 
     const exportSheetJsonBtn = document.getElementById("exportSheetJsonBtn");
     const exportSheetCsvBtn = document.getElementById("exportSheetCsvBtn");
@@ -1077,14 +1133,10 @@
       if (index === null || index === undefined) {
         editIndicatorEl.style.display = "none";
         editIndicatorEl.textContent = "";
-        saveRowBtn.textContent = "Save row";
-        cancelEditBtn.style.display = "none";
         return;
       }
       editIndicatorEl.style.display = "inline-flex";
       editIndicatorEl.textContent = "Editing row #" + (index + 1);
-      saveRowBtn.textContent = "Update row";
-      cancelEditBtn.style.display = "inline-flex";
     }
 
     function setAutosaveIndicator() {
@@ -1101,7 +1153,6 @@
       });
       editIndex = null;
       setEditIndicator(null);
-      showMessage("", "");
     }
 
     function collectRowData() {
@@ -1135,6 +1186,33 @@
           input.value = row[fieldName] ?? "";
         }
       });
+    }
+
+    // Modal
+
+    function openModal(mode, index) {
+      if (!currentSheet) {
+        showMessage("Please select a sheet first.", "error");
+        return;
+      }
+      if (mode === "create") {
+        clearForm();
+        modalTitleEl.textContent = "Add new row";
+        editIndex = null;
+        setEditIndicator(null);
+      } else if (mode === "edit") {
+        const rows = dataStore[currentSheet] || [];
+        if (index == null || index < 0 || index >= rows.length) return;
+        editIndex = index;
+        populateFormFromRow(rows[index]);
+        modalTitleEl.textContent = "Edit row #" + (index + 1);
+        setEditIndicator(index);
+      }
+      rowModalEl.style.display = "flex";
+    }
+
+    function closeModal() {
+      rowModalEl.style.display = "none";
     }
 
     // Local storage
@@ -1239,7 +1317,7 @@
       sheetSubtitleEl.textContent =
         "This sheet has " +
         fields.length +
-        " fields. Use the form to add or edit rows.";
+        " fields. Use the add row button to manage data.";
       fieldsCountTagEl.textContent = fields.length + " fields";
       rowsCountTagEl.textContent = rows.length + " rows total";
       rowStatsEl.textContent = "Total rows: " + rows.length;
@@ -1410,7 +1488,7 @@
       if (!filteredRows.length) {
         if (total === 0) {
           noDataMsgEl.textContent =
-            "No data entered yet. Use the form above to add rows.";
+            "No data entered yet. Use the Add row button to insert data.";
         } else {
           noDataMsgEl.textContent =
             "No rows match your search. Clear the search to see all rows.";
@@ -1501,6 +1579,11 @@
         actionsTd.appendChild(actionsDiv);
         tr.appendChild(actionsTd);
 
+        // Double click on row to edit
+        tr.addEventListener("dblclick", () => {
+          startEditRow(realIndex);
+        });
+
         tbody.appendChild(tr);
       });
 
@@ -1513,14 +1596,11 @@
       if (!currentSheet) return;
       const rows = dataStore[currentSheet] || [];
       if (index < 0 || index >= rows.length) return;
-      editIndex = index;
-      populateFormFromRow(rows[index]);
-      setEditIndicator(index);
+      openModal("edit", index);
       showMessage(
-        'You are editing an existing row. Update fields and click "Update row".',
+        'You are editing an existing row. Update fields and click "Save row".',
         "success"
       );
-      window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
     function deleteRow(index) {
@@ -1580,6 +1660,7 @@
       }
 
       clearForm();
+      closeModal();
       saveToLocalStorage();
       renderSheetHeaderSummary();
       renderTable();
@@ -1741,7 +1822,18 @@
     clearFormBtn.addEventListener("click", clearForm);
     cancelEditBtn.addEventListener("click", () => {
       clearForm();
+      closeModal();
       showMessage("Edit cancelled.", "success");
+    });
+
+    openAddRowBtn.addEventListener("click", () => openModal("create"));
+    closeModalBtn.addEventListener("click", () => {
+      closeModal();
+    });
+    rowModalEl.addEventListener("click", (e) => {
+      if (e.target === rowModalEl) {
+        closeModal();
+      }
     });
 
     exportJsonBtn.addEventListener("click", handleExportAllJson);
