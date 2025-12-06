@@ -2,7 +2,7 @@
 <html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8" />
-  <title>Sheets Data Entry Platform</title>
+  <title>Advanced Reports Management Platform</title>
   <style>
     * {
       box-sizing: border-box;
@@ -11,7 +11,7 @@
 
     body {
       margin: 0;
-      background: #f3f4f6;
+      background: #0b1120;
       color: #111827;
     }
 
@@ -22,22 +22,23 @@
     }
 
     .app-header {
-      background: #0f172a;
+      background: linear-gradient(90deg, #0f172a, #020617);
       color: #e5e7eb;
       padding: 12px 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      box-shadow: 0 2px 6px rgba(15,23,42,0.25);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.45);
       position: sticky;
       top: 0;
       z-index: 50;
     }
 
     .app-header-title {
-      font-size: 18px;
-      font-weight: 600;
+      font-size: 19px;
+      font-weight: 650;
+      letter-spacing: 0.03em;
     }
 
     .app-header-sub {
@@ -46,7 +47,7 @@
     }
 
     .app-header-right {
-      font-size: 12px;
+      font-size: 11px;
       color: #9ca3af;
       text-align: right;
     }
@@ -61,13 +62,13 @@
     /* Sidebar */
 
     .sidebar {
-      width: 280px;
+      width: 290px;
       background: #020617;
       color: #e5e7eb;
       padding: 16px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 14px;
       border-right: 1px solid #111827;
     }
 
@@ -89,7 +90,7 @@
     .sidebar-search {
       width: 100%;
       padding: 7px 10px;
-      border-radius: 8px;
+      border-radius: 999px;
       border: 1px solid #1e293b;
       background: #020617;
       color: #e5e7eb;
@@ -104,7 +105,7 @@
       list-style: none;
       padding: 0;
       margin: 8px 0 0 0;
-      max-height: 50vh;
+      max-height: 46vh;
       overflow-y: auto;
     }
 
@@ -116,7 +117,7 @@
       width: 100%;
       border: none;
       padding: 8px 10px;
-      border-radius: 8px;
+      border-radius: 10px;
       background: #020617;
       color: #e5e7eb;
       text-align: left;
@@ -143,8 +144,8 @@
     }
 
     .sheet-btn:hover {
-      background: #0b1120;
-      border-color: #1e293b;
+      background: #020617;
+      border-color: #1f2937;
       transform: translateY(-1px);
     }
 
@@ -182,12 +183,12 @@
     }
 
     .btn-primary {
-      background: #10b981;
+      background: #22c55e;
       color: #022c22;
     }
 
     .btn-primary:hover {
-      background: #34d399;
+      background: #4ade80;
     }
 
     .file-label {
@@ -222,13 +223,14 @@
       display: flex;
       flex-direction: column;
       gap: 12px;
+      background: radial-gradient(circle at top, #111827 0, #020617 55%, #020617 100%);
     }
 
     .main-card {
       background: #ffffff;
-      border-radius: 14px;
+      border-radius: 16px;
       padding: 18px 20px;
-      box-shadow: 0 10px 24px rgba(15,23,42,0.08);
+      box-shadow: 0 18px 40px rgba(15,23,42,0.55);
       display: flex;
       flex-direction: column;
       gap: 14px;
@@ -255,7 +257,7 @@
       font-size: 18px;
       margin: 0;
       text-transform: uppercase;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.06em;
     }
 
     .main-header-sub {
@@ -285,6 +287,34 @@
     .tag-ghost {
       background: #f9fafb;
       color: #4b5563;
+    }
+
+    .sheet-toolbar {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      font-size: 11px;
+    }
+
+    .btn-outline {
+      background: #ffffff;
+      border: 1px solid #d1d5db;
+      color: #111827;
+    }
+
+    .btn-outline:hover {
+      background: #f3f4f6;
+    }
+
+    .btn-danger {
+      background: #ef4444;
+      color: #fef2f2;
+    }
+
+    .btn-danger:hover {
+      background: #f97373;
     }
 
     /* Form area */
@@ -381,6 +411,11 @@
       border: 1px solid #facc15;
     }
 
+    .autosave-indicator {
+      font-size: 11px;
+      color: #6b7280;
+    }
+
     /* Table area */
 
     .table-header-row {
@@ -406,7 +441,7 @@
 
     .table-search {
       padding: 6px 8px;
-      border-radius: 8px;
+      border-radius: 999px;
       border: 1px solid #d1d5db;
       font-size: 12px;
       min-width: 180px;
@@ -414,7 +449,7 @@
 
     .page-size-select {
       padding: 6px 8px;
-      border-radius: 8px;
+      border-radius: 999px;
       border: 1px solid #d1d5db;
       font-size: 12px;
     }
@@ -425,7 +460,7 @@
       border-radius: 10px;
       border: 1px solid #e5e7eb;
       background: #f9fafb;
-      max-height: calc(100vh - 320px);
+      max-height: calc(100vh - 330px);
     }
 
     table {
@@ -449,6 +484,17 @@
       position: sticky;
       top: 0;
       z-index: 5;
+      cursor: pointer;
+    }
+
+    th.sortable:hover {
+      background: #e5e7eb;
+    }
+
+    th .sort-indicator {
+      margin-left: 4px;
+      font-size: 10px;
+      color: #6b7280;
     }
 
     tr:nth-child(even) td {
@@ -558,14 +604,14 @@
   <div class="app-shell">
     <header class="app-header">
       <div>
-        <div class="app-header-title">Sheets Data Entry Platform</div>
+        <div class="app-header-title">Advanced Reports Management Platform</div>
         <div class="app-header-sub">
-          Multi-sheet data entry, edit, search, pagination, and JSON import/export
+          Multi-sheet data entry, analytics-ready, with local storage & JSON backup
         </div>
       </div>
       <div class="app-header-right">
-        <div>Data is also saved locally in your browser (localStorage).</div>
-        <div>Use JSON export/import for full Excel backup and restore.</div>
+        <div>Data is stored locally in your browser (internal storage).</div>
+        <div>Use JSON/CSV export for backup, sharing, and reporting.</div>
       </div>
     </header>
 
@@ -591,14 +637,14 @@
             <span>JSON Backup</span>
           </div>
           <button id="exportJsonBtn" class="btn btn-primary" type="button">
-            Export all sheets as JSON
+            Export ALL sheets as JSON
           </button>
           <label class="file-label">
             Import from JSON
             <input type="file" id="importJsonInput" accept="application/json">
           </label>
           <div class="json-hint">
-            Export creates a <b>sheets-data.json</b> file containing all sheets.<br/>
+            Export creates a <b>sheets-data.json</b> file for all sheets.<br/>
             Import will merge data for sheets that exist in this app.
           </div>
         </div>
@@ -629,6 +675,18 @@
             </div>
           </div>
 
+          <div class="sheet-toolbar">
+            <button id="exportSheetJsonBtn" class="btn btn-outline" type="button">
+              Export current sheet as JSON
+            </button>
+            <button id="exportSheetCsvBtn" class="btn btn-outline" type="button">
+              Export current sheet as CSV
+            </button>
+            <button id="clearSheetBtn" class="btn btn-danger" type="button">
+              Clear current sheet
+            </button>
+          </div>
+
           <div class="form-header-row">
             <div class="form-title">Row data</div>
             <div class="form-actions">
@@ -649,6 +707,7 @@
           <div class="status-row">
             <div id="message"></div>
             <div id="editIndicator" class="edit-indicator" style="display:none;"></div>
+            <div id="autosaveIndicator" class="autosave-indicator"></div>
           </div>
 
           <div class="table-header-row">
@@ -680,7 +739,7 @@
   </div>
 
   <script>
-    // Sheets configuration based on your Excel file
+    // Sheets configuration: column names must match Excel / JSON
     const sheetsConfig = {
       "QC Sequence Number": [
         "SR NO.",
@@ -870,7 +929,7 @@
       dataStore[name] = [];
     });
 
-    const LOCAL_STORAGE_KEY = "sheetsDataStore_v1";
+    const LOCAL_STORAGE_KEY = "sheetsDataStore_v2";
 
     let currentSheet = null;
     let editIndex = null;
@@ -878,6 +937,8 @@
     let sheetSearchQuery = "";
     let currentPage = 1;
     let pageSize = 50;
+    let sortField = null;
+    let sortDirection = "asc"; // "asc" or "desc"
 
     // DOM references
     const sheetListEl = document.getElementById("sheetList");
@@ -896,6 +957,11 @@
     const cancelEditBtn = document.getElementById("cancelEditBtn");
     const messageEl = document.getElementById("message");
     const editIndicatorEl = document.getElementById("editIndicator");
+    const autosaveIndicatorEl = document.getElementById("autosaveIndicator");
+
+    const exportSheetJsonBtn = document.getElementById("exportSheetJsonBtn");
+    const exportSheetCsvBtn = document.getElementById("exportSheetCsvBtn");
+    const clearSheetBtn = document.getElementById("clearSheetBtn");
 
     const tableEl = document.getElementById("dataTable");
     const noDataMsgEl = document.getElementById("noDataMsg");
@@ -940,6 +1006,12 @@
       editIndicatorEl.textContent = "Editing row #" + (index + 1);
       saveRowBtn.textContent = "Update row";
       cancelEditBtn.style.display = "inline-flex";
+    }
+
+    function setAutosaveIndicator() {
+      const now = new Date();
+      autosaveIndicatorEl.textContent =
+        "Auto-saved locally at " + now.toLocaleTimeString();
     }
 
     function clearForm() {
@@ -991,6 +1063,7 @@
       try {
         const payload = JSON.stringify(dataStore);
         window.localStorage.setItem(LOCAL_STORAGE_KEY, payload);
+        setAutosaveIndicator();
       } catch (err) {
         console.warn("Failed to save to localStorage:", err);
       }
@@ -1006,6 +1079,9 @@
             dataStore[sheetName] = parsed[sheetName];
           }
         });
+        if (Object.keys(parsed).length > 0) {
+          setAutosaveIndicator();
+        }
       } catch (err) {
         console.warn("Failed to load from localStorage:", err);
       }
@@ -1054,6 +1130,8 @@
     function selectSheet(name) {
       currentSheet = name;
       editIndex = null;
+      sortField = null;
+      sortDirection = "asc";
       setEditIndicator(null);
       rowSearchQuery = "";
       rowSearchEl.value = "";
@@ -1111,25 +1189,49 @@
       });
     }
 
-    // Table & pagination
+    // Helpers for sorting & filtering
 
-    function getFilteredRows() {
-      if (!currentSheet) return [];
-      const rows = dataStore[currentSheet] || [];
-      if (!rowSearchQuery.trim()) return rows;
-
-      const query = rowSearchQuery.toLowerCase();
-      const fields = sheetsConfig[currentSheet] || [];
-      return rows.filter(row =>
-        fields.some(fieldName => {
-          const value = row[fieldName];
-          if (value == null) return false;
-          return String(value).toLowerCase().includes(query);
-        })
-      );
+    function compareValues(a, b) {
+      if (a === null || a === undefined) a = "";
+      if (b === null || b === undefined) b = "";
+      const strA = String(a).toLowerCase();
+      const strB = String(b).toLowerCase();
+      if (strA < strB) return -1;
+      if (strA > strB) return 1;
+      return 0;
     }
 
-    function renderPagination(totalRows, visibleRows, filteredRows) {
+    function getFilteredAndSortedRows() {
+      if (!currentSheet) return [];
+      const rows = dataStore[currentSheet] || [];
+      const fields = sheetsConfig[currentSheet] || [];
+
+      let result = rows;
+
+      if (rowSearchQuery.trim()) {
+        const query = rowSearchQuery.toLowerCase();
+        result = result.filter(row =>
+          fields.some(fieldName => {
+            const value = row[fieldName];
+            if (value == null) return false;
+            return String(value).toLowerCase().includes(query);
+          })
+        );
+      }
+
+      if (sortField) {
+        result = [...result].sort((a, b) => {
+          const cmp = compareValues(a[sortField], b[sortField]);
+          return sortDirection === "asc" ? cmp : -cmp;
+        });
+      }
+
+      return result;
+    }
+
+    // Pagination
+
+    function renderPagination(filteredRows) {
       if (!currentSheet) {
         paginationEl.innerHTML = "";
         return;
@@ -1196,6 +1298,8 @@
       paginationEl.appendChild(container);
     }
 
+    // Table
+
     function renderTable() {
       tableEl.innerHTML = "";
       noDataMsgEl.textContent = "";
@@ -1205,7 +1309,7 @@
 
       const fields = sheetsConfig[currentSheet] || [];
       const allRows = dataStore[currentSheet] || [];
-      const filteredRows = getFilteredRows();
+      const filteredRows = getFilteredAndSortedRows();
 
       const total = allRows.length;
 
@@ -1246,7 +1350,30 @@
 
       fields.forEach(fieldName => {
         const th = document.createElement("th");
-        th.textContent = fieldName;
+        th.className = "sortable";
+        const textSpan = document.createElement("span");
+        textSpan.textContent = fieldName;
+        th.appendChild(textSpan);
+
+        const sortSpan = document.createElement("span");
+        sortSpan.className = "sort-indicator";
+        if (sortField === fieldName) {
+          sortSpan.textContent = sortDirection === "asc" ? "▲" : "▼";
+        } else {
+          sortSpan.textContent = "⇅";
+        }
+        th.appendChild(sortSpan);
+
+        th.addEventListener("click", () => {
+          if (sortField === fieldName) {
+            sortDirection = sortDirection === "asc" ? "desc" : "asc";
+          } else {
+            sortField = fieldName;
+            sortDirection = "asc";
+          }
+          renderTable();
+        });
+
         headerRow.appendChild(th);
       });
 
@@ -1299,7 +1426,7 @@
 
       tableEl.appendChild(tbody);
 
-      renderPagination(total, pageRows.length, filteredRows);
+      renderPagination(filteredRows);
     }
 
     function startEditRow(index) {
@@ -1378,7 +1505,7 @@
       renderTable();
     }
 
-    function handleExportJson() {
+    function handleExportAllJson() {
       try {
         const blob = new Blob([JSON.stringify(dataStore, null, 2)], {
           type: "application/json"
@@ -1391,7 +1518,7 @@
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
-        showMessage("Data exported as JSON.", "success");
+        showMessage("All sheets exported as JSON.", "success");
       } catch (err) {
         console.error(err);
         showMessage("Error exporting JSON.", "error");
@@ -1434,6 +1561,93 @@
       reader.readAsText(file);
     }
 
+    function handleExportCurrentSheetJson() {
+      if (!currentSheet) {
+        showMessage("Please select a sheet first.", "error");
+        return;
+      }
+      const rows = dataStore[currentSheet] || [];
+      const payload = {};
+      payload[currentSheet] = rows;
+
+      try {
+        const blob = new Blob([JSON.stringify(payload, null, 2)], {
+          type: "application/json"
+        });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = currentSheet.replace(/\s+/g, "_") + ".json";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showMessage("Current sheet exported as JSON.", "success");
+      } catch (err) {
+        console.error(err);
+        showMessage("Error exporting sheet JSON.", "error");
+      }
+    }
+
+    function handleExportCurrentSheetCsv() {
+      if (!currentSheet) {
+        showMessage("Please select a sheet first.", "error");
+        return;
+      }
+      const fields = sheetsConfig[currentSheet] || [];
+      const rows = dataStore[currentSheet] || [];
+
+      if (!fields.length) {
+        showMessage("No fields defined for this sheet.", "error");
+        return;
+      }
+
+      let csv = "";
+      csv += fields.map(f => '"' + String(f).replace(/"/g, '""') + '"').join(",") + "\n";
+
+      rows.forEach(row => {
+        const line = fields.map(f => {
+          const v = row[f] == null ? "" : String(row[f]);
+          return '"' + v.replace(/"/g, '""') + '"';
+        }).join(",");
+        csv += line + "\n";
+      });
+
+      try {
+        const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = currentSheet.replace(/\s+/g, "_") + ".csv";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showMessage("Current sheet exported as CSV.", "success");
+      } catch (err) {
+        console.error(err);
+        showMessage("Error exporting sheet CSV.", "error");
+      }
+    }
+
+    function handleClearCurrentSheet() {
+      if (!currentSheet) {
+        showMessage("Please select a sheet first.", "error");
+        return;
+      }
+      const confirmed = window.confirm(
+        "This will remove ALL rows from \"" + currentSheet + "\" in local storage. Continue?"
+      );
+      if (!confirmed) return;
+
+      dataStore[currentSheet] = [];
+      saveToLocalStorage();
+      clearForm();
+      renderSheetHeaderSummary();
+      renderTable();
+      showMessage("Current sheet cleared.", "success");
+    }
+
     // Event bindings
 
     saveRowBtn.addEventListener("click", handleSaveRow);
@@ -1443,8 +1657,12 @@
       showMessage("Edit cancelled.", "success");
     });
 
-    exportJsonBtn.addEventListener("click", handleExportJson);
+    exportJsonBtn.addEventListener("click", handleExportAllJson);
     importJsonInput.addEventListener("change", handleImportJson);
+
+    exportSheetJsonBtn.addEventListener("click", handleExportCurrentSheetJson);
+    exportSheetCsvBtn.addEventListener("click", handleExportCurrentSheetCsv);
+    clearSheetBtn.addEventListener("click", handleClearCurrentSheet);
 
     rowSearchEl.addEventListener("input", e => {
       rowSearchQuery = e.target.value || "";
