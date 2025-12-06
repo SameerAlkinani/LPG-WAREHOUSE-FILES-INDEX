@@ -1,80 +1,1896 @@
-/* Smooth scrollbars */
-* {
-  scrollbar-width: thin;
-  scrollbar-color: #6b7280 #1f2937;
-}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Reports Management Console</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+    }
 
-*::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
+    body {
+      margin: 0;
+      background: #e5e7eb;
+      color: #111827;
+    }
 
-*::-webkit-scrollbar-track {
-  background: #1f2937;
-  border-radius: 10px;
-}
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
 
-*::-webkit-scrollbar-thumb {
-  background-color: #6b7280;
-  border-radius: 10px;
-}
+    .app-shell {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
 
-/* Table scroll container */
-.table-wrapper {
-  overflow-x: auto !important;
-  overflow-y: auto !important;
-  max-height: calc(100vh - 320px);
-  background: #111827;
-  border-radius: 12px;
-  border: 1px solid #374151;
-}
+    /* Top bar */
 
-/* Fix missing right-side gap */
-.main {
-  overflow: hidden;
-}
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      padding: 10px 20px;
+      background: linear-gradient(120deg, #1d4ed8, #0f172a);
+      color: #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.45);
+    }
 
-/* Table colors */
-table {
-  background: #1f2937;
-  color: #e5e7eb;
-}
+    .app-header-left {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
 
-th {
-  background: #374151 !important;
-  color: #f3f4f6 !important;
-}
+    .app-header-title {
+      font-size: 20px;
+      font-weight: 650;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
 
-td {
-  background: #1f2937;
-  color: #e5e7eb;
-}
+    .app-header-sub {
+      font-size: 12px;
+      color: #d1d5db;
+    }
 
-tr:nth-child(even) td {
-  background: #111827 !important;
-}
+    .app-header-right {
+      font-size: 11px;
+      color: #cbd5f5;
+      text-align: right;
+      max-width: 280px;
+    }
 
-tr:hover td {
-  background: #283548 !important;
-}
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      font-size: 11px;
+      color: #e5e7eb;
+      background: linear-gradient(120deg, rgba(15, 23, 42, 0.9), rgba(37, 99, 235, 0.9));
+    }
 
-/* Page background */
-body {
-  background: #0d1117 !important;
-}
+    .pill-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.3);
+    }
 
-/* Modal background */
-.modal-card {
-  background: #1f2937 !important;
-  color: #e5e7eb !important;
-}
+    /* Layout */
 
-label {
-  color: #e5e7eb !important;
-}
+    .app-body {
+      flex: 1;
+      display: flex;
+      flex-direction: row;
+      min-height: calc(100vh - 52px);
+      background: #e5e7eb;
+    }
 
-input {
-  background: #111827 !important;
-  color: #f3f4f6 !important;
-  border: 1px solid #374151 !important;
-}
+    /* Sidebar */
+
+    .sidebar {
+      width: 280px;
+      padding: 16px 14px 16px 18px;
+      background: #f3f4f6;
+      border-right: 1px solid #d4d4d8;
+      color: #111827;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .sidebar-section {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .sidebar-section-title {
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #111827;
+    }
+
+    .sheets-count {
+      font-size: 11px;
+      color: #6b7280;
+    }
+
+    .sidebar-search {
+      width: 100%;
+      padding: 7px 11px;
+      border-radius: 999px;
+      border: 1px solid #d1d5db;
+      background: #ffffff;
+      color: #111827;
+      font-size: 12px;
+      outline: none;
+    }
+
+    .sidebar-search::placeholder {
+      color: #9ca3af;
+    }
+
+    .sheet-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      max-height: 46vh;
+      overflow-y: auto;
+    }
+
+    .sheet-list li {
+      margin-bottom: 6px;
+    }
+
+    .sheet-btn {
+      width: 100%;
+      border: none;
+      padding: 8px 10px;
+      border-radius: 12px;
+      background: #ffffff;
+      color: #111827;
+      text-align: left;
+      cursor: pointer;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      border: 1px solid transparent;
+      transition: background 0.16s, transform 0.08s, border-color 0.16s,
+        box-shadow 0.16s;
+    }
+
+    .sheet-btn span.name {
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .sheet-btn span.fields-count {
+      font-size: 10px;
+      color: #6b7280;
+    }
+
+    .sheet-btn:hover {
+      background: #eef2ff;
+      border-color: #93c5fd;
+      box-shadow: 0 4px 10px rgba(148, 163, 184, 0.4);
+      transform: translateY(-1px);
+    }
+
+    .sheet-btn.active {
+      background: #1d4ed8;
+      color: #eff6ff;
+      border-color: #1d4ed8;
+      font-weight: 600;
+      box-shadow: 0 6px 18px rgba(37, 99, 235, 0.4);
+    }
+
+    .json-controls {
+      border-top: 1px solid #d4d4d8;
+      padding-top: 12px;
+      font-size: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .btn,
+    .file-label {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      border-radius: 999px;
+      padding: 8px 12px;
+      border: none;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 500;
+      text-align: center;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      color: #022c22;
+      border: 1px solid rgba(21, 128, 61, 0.9);
+      box-shadow: 0 6px 16px rgba(22, 163, 74, 0.35);
+    }
+
+    .btn-primary:hover {
+      filter: brightness(1.05);
+    }
+
+    .file-label {
+      background: #ffffff;
+      color: #111827;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid #d1d5db;
+    }
+
+    .file-label:hover {
+      background: #e5e7eb;
+    }
+
+    .file-label input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .json-hint {
+      font-size: 11px;
+      color: #6b7280;
+      line-height: 1.4;
+    }
+
+    /* Main */
+
+    .main {
+      flex: 1;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .main-card {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 18px 20px;
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.15);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      min-height: calc(100vh - 64px);
+      border: 1px solid #e5e7eb;
+    }
+
+    .main-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+      border-bottom: 1px solid #e5e7eb;
+      padding-bottom: 10px;
+    }
+
+    .main-header-left {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .main-header-title {
+      font-size: 19px;
+      margin: 0;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #0f172a;
+    }
+
+    .main-header-sub {
+      font-size: 12px;
+      color: #6b7280;
+    }
+
+    .main-header-right {
+      text-align: right;
+      font-size: 11px;
+      color: #6b7280;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: #e0f2fe;
+      color: #0369a1;
+      font-size: 11px;
+      font-weight: 500;
+      margin-left: 4px;
+    }
+
+    .tag-ghost {
+      background: #f4f4f5;
+      color: #4b5563;
+    }
+
+    .sheet-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      font-size: 11px;
+    }
+
+    .sheet-toolbar-left {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-outline {
+      background: #ffffff;
+      border: 1px solid #d1d5db;
+      color: #111827;
+    }
+
+    .btn-outline:hover {
+      background: #f3f4f6;
+    }
+
+    .btn-danger {
+      background: #f97373;
+      color: #7f1d1d;
+      border: 1px solid #fecaca;
+    }
+
+    .btn-danger:hover {
+      background: #ef4444;
+      color: #fee2e2;
+    }
+
+    /* Status */
+
+    .status-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      margin-top: 4px;
+      font-size: 12px;
+      min-height: 20px;
+    }
+
+    #message.success {
+      color: #059669;
+    }
+
+    #message.error {
+      color: #b91c1c;
+    }
+
+    .edit-indicator {
+      font-size: 11px;
+      color: #b45309;
+      background: #fffbeb;
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid #facc15;
+    }
+
+    .autosave-indicator {
+      font-size: 11px;
+      color: #6b7280;
+    }
+
+    /* Table */
+
+    .table-header-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .row-stats {
+      font-size: 11px;
+      color: #6b7280;
+    }
+
+    .table-search-group {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .table-search {
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid #d1d5db;
+      font-size: 12px;
+      min-width: 180px;
+      background: #ffffff;
+    }
+
+    .page-size-select {
+      padding: 6px 8px;
+      border-radius: 999px;
+      border: 1px solid #d1d5db;
+      font-size: 12px;
+      background: #ffffff;
+    }
+
+    /* BOTH directions scroll here */
+    .table-wrapper {
+      margin-top: 6px;
+      border-radius: 12px;
+      border: 1px solid #e5e7eb;
+      background: #f9fafb;
+      max-height: calc(100vh - 340px);
+      overflow: auto;      /* vertical + horizontal */
+    }
+
+    /* nicer scrollbars */
+    .table-wrapper::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    .table-wrapper::-webkit-scrollbar-track {
+      background: #e5e7eb;
+      border-radius: 999px;
+    }
+    .table-wrapper::-webkit-scrollbar-thumb {
+      background: #9ca3af;
+      border-radius: 999px;
+    }
+    .table-wrapper::-webkit-scrollbar-thumb:hover {
+      background: #6b7280;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      min-width: 650px;
+    }
+
+    th,
+    td {
+      border-bottom: 1px solid #e5e7eb;
+      padding: 6px 8px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #eef2ff;
+      font-weight: 600;
+      white-space: nowrap;
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      cursor: pointer;
+    }
+
+    th.sortable:hover {
+      background: #e0e7ff;
+    }
+
+    th .sort-indicator {
+      margin-left: 4px;
+      font-size: 10px;
+      color: #6b7280;
+    }
+
+    tr:nth-child(even) td {
+      background: #f9fafb;
+    }
+
+    tr:hover td {
+      background: #e5f3ff;
+    }
+
+    .no-data {
+      font-size: 12px;
+      color: #9ca3af;
+      padding: 10px 0 2px;
+    }
+
+    .table-actions {
+      display: flex;
+      gap: 4px;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+    }
+
+    .table-btn {
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-size: 11px;
+      padding: 3px 8px;
+    }
+
+    .table-btn-edit {
+      background: #e0f2fe;
+      color: #0369a1;
+    }
+
+    .table-btn-edit:hover {
+      background: #bae6fd;
+    }
+
+    .table-btn-delete {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+
+    .table-btn-delete:hover {
+      background: #fecaca;
+    }
+
+    /* Pagination */
+
+    .pagination {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 8px;
+      font-size: 11px;
+      color: #6b7280;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .pagination-controls {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .pagination-btn {
+      border-radius: 999px;
+      border: 1px solid #d1d5db;
+      background: #ffffff;
+      padding: 3px 10px;
+      font-size: 11px;
+      cursor: pointer;
+    }
+
+    .pagination-btn:hover:not(:disabled) {
+      background: #e5e7eb;
+    }
+
+    .pagination-btn:disabled {
+      opacity: 0.4;
+      cursor: default;
+    }
+
+    /* Modal */
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.4);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 60;
+      padding: 16px;
+    }
+
+    .modal-card {
+      background: #ffffff;
+      border-radius: 16px;
+      max-width: 900px;
+      width: 100%;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.35);
+      border: 1px solid #e5e7eb;
+    }
+
+    .modal-header {
+      padding: 12px 16px;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .modal-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: #111827;
+    }
+
+    .modal-close-btn {
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      font-size: 16px;
+      line-height: 1;
+      color: #6b7280;
+      border-radius: 999px;
+      padding: 4px 6px;
+    }
+
+    .modal-close-btn:hover {
+      background: #e5e7eb;
+    }
+
+    .modal-body {
+      padding: 12px 16px 6px 16px;
+      overflow-y: auto;
+    }
+
+    .modal-footer {
+      padding: 10px 16px 12px 16px;
+      border-top: 1px solid #e5e7eb;
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    form {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 10px 16px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 13px;
+    }
+
+    label {
+      font-weight: 500;
+      color: #374151;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="date"] {
+      padding: 7px 8px;
+      border-radius: 9px;
+      border: 1px solid #d1d5db;
+      font-size: 13px;
+      background: #ffffff;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.25);
+    }
+
+    @media (max-width: 900px) {
+      .app-body {
+        flex-direction: column;
+      }
+      .sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #d4d4d8;
+      }
+      .main-card {
+        min-height: auto;
+      }
+      .table-wrapper {
+        max-height: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <div class="app-header-left">
+        <div class="app-header-title">Reports Management Console</div>
+        <div class="app-header-sub">
+          Multi-sheet data entry and reporting with internal storage & JSON/CSV export
+        </div>
+      </div>
+      <div class="app-header-right">
+        <div class="pill">
+          <span class="pill-dot"></span>
+          <span>Internal data storage is active (local browser only)</span>
+        </div>
+        <div>Use JSON & CSV export for backup, sharing, and analytics.</div>
+      </div>
+    </header>
+
+    <div class="app-body">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-section">
+          <div class="sidebar-section-title">
+            <span>Sheets</span>
+            <span class="sheets-count" id="sheetsCount"></span>
+          </div>
+          <input
+            id="sheetSearch"
+            class="sidebar-search"
+            type="text"
+            placeholder="Search sheets..."
+          />
+          <ul id="sheetList" class="sheet-list"></ul>
+        </div>
+
+        <div class="json-controls">
+          <div class="sidebar-section-title">
+            <span>JSON Backup</span>
+          </div>
+          <button id="exportJsonBtn" class="btn btn-primary" type="button">
+            Export all sheets as JSON
+          </button>
+          <label class="file-label">
+            Import from JSON
+            <input type="file" id="importJsonInput" accept="application/json" />
+          </label>
+          <div class="json-hint">
+            Export creates <b>sheets-data.json</b> for all sheets.<br />
+            Import will merge data for sheets already defined in this console.
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main -->
+      <main class="main">
+        <section class="main-card">
+          <div class="main-header">
+            <div class="main-header-left">
+              <h2 id="sheetTitle" class="main-header-title">
+                Select a sheet from the left sidebar
+              </h2>
+              <div id="sheetSubtitle" class="main-header-sub">
+                Sheet fields and names are automatically synced with your Excel file structure.
+              </div>
+            </div>
+            <div class="main-header-right">
+              <div>
+                <span class="tag tag-ghost">
+                  <span id="fieldsCountTag">0 fields</span>
+                </span>
+                <span class="tag tag-ghost">
+                  <span id="rowsCountTag">0 rows</span>
+                </span>
+              </div>
+              <div>Use the table and actions to manage rows per sheet.</div>
+            </div>
+          </div>
+
+          <div class="sheet-toolbar">
+            <div class="sheet-toolbar-left">
+              <button id="openAddRowBtn" class="btn btn-primary" type="button">
+                Add row
+              </button>
+            </div>
+            <div class="sheet-toolbar-left">
+              <button
+                id="exportSheetJsonBtn"
+                class="btn btn-outline"
+                type="button"
+              >
+                Export current sheet as JSON
+              </button>
+              <button
+                id="exportSheetCsvBtn"
+                class="btn btn-outline"
+                type="button"
+              >
+                Export current sheet as CSV
+              </button>
+              <button id="clearSheetBtn" class="btn btn-danger" type="button">
+                Clear current sheet
+              </button>
+            </div>
+          </div>
+
+          <div class="status-row">
+            <div id="message"></div>
+            <div
+              id="editIndicator"
+              class="edit-indicator"
+              style="display: none"
+            ></div>
+            <div id="autosaveIndicator" class="autosave-indicator"></div>
+          </div>
+
+          <div class="table-header-row">
+            <div class="row-stats" id="rowStats"></div>
+            <div class="table-search-group">
+              <input
+                id="rowSearch"
+                class="table-search"
+                type="text"
+                placeholder="Search rows in this sheet..."
+              />
+              <select id="pageSizeSelect" class="page-size-select">
+                <option value="25">25 rows / page</option>
+                <option value="50" selected>50 rows / page</option>
+                <option value="100">100 rows / page</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="table-wrapper">
+            <table id="dataTable"></table>
+          </div>
+          <div id="noDataMsg" class="no-data"></div>
+
+          <div id="pagination" class="pagination"></div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- Modal for add/edit row -->
+  <div id="rowModal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div id="modalTitle" class="modal-title">Add new row</div>
+        <button id="closeModalBtn" class="modal-close-btn" type="button">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="dataForm"></form>
+      </div>
+      <div class="modal-footer">
+        <button id="saveRowBtn" class="btn btn-primary" type="button">
+          Save row
+        </button>
+        <button id="clearFormBtn" class="btn btn-outline" type="button">
+          Clear form
+        </button>
+        <button id="cancelEditBtn" class="btn btn-outline" type="button">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Sheets configuration: must match Excel/JSON headers
+    const sheetsConfig = {
+      "QC Sequence Number": [
+        "SR NO.",
+        "DATE",
+        "QC SEQUENCE NUMBER",
+        "PO NUMBER",
+        "MATERIAL DOCUMENT NUMBER",
+        "LOCATED BY",
+        "REMARK"
+      ],
+
+      "MIV Sequence Number": [
+        "SR NO.",
+        "DATE",
+        "MIV SEQUENCE NUMBER",
+        "RESERVATION NUMBER",
+        "MATERIAL DOCUMENT NUMBER",
+        "ISSUED BY",
+        "REMARK"
+      ],
+
+      "Urgent book report": [
+        "SR NO.",
+        "UB SR NO.",
+        "DATE",
+        "ITEM CODE",
+        "MATERIAL DESCRIPTION",
+        "UOM",
+        "QTY",
+        "Unit Value (USD)",
+        "Total Value (USD)",
+        "RESRVATION NO",
+        "WO NO.",
+        "MATERIAL DOCUMENT NUMBER",
+        "ISSUD TO",
+        "DEPARTMENT",
+        "STATUS",
+        "ISSUE DESCRIPTION",
+        "COMITTMENT ITEM",
+        "REMARKS"
+      ],
+
+      "MRV Sequence Number": [
+        "SR NO.",
+        "DATE",
+        "MRV SEQUENCE NUMBER",
+        "RETURNED BY",
+        "MATERIAL DOCUMENT NUMBER",
+        "LOCATED BY",
+        "REMARK"
+      ],
+
+      "SES Sequence Number": [
+        "SR NO.",
+        "DATE",
+        "INVOICE NUMBER",
+        "SES SEQUENCE NUMBER",
+        "PO NUMBER",
+        "ISSUED TO",
+        "REMARKS"
+      ],
+
+      "OSDR Sequence Number": [
+        "SR NO.",
+        "DATE",
+        "OSDR SEQUENCE NUMBER",
+        "OSDR TYPE",
+        "PR NUMBER",
+        "PO NUMBER",
+        "INVOICE / P.L.NO",
+        "ITEM CODE",
+        "ITEM DESCRIPTION",
+        "QTY",
+        "UNIT PRICE",
+        "TOTAL PRICE",
+        "BUYER",
+        "VENDOR / SUPPLIER",
+        "PROBLEM DESCRIPTION",
+        "ACTION / STATUS",
+        "Overseas /Local",
+        "Location",
+        "REMARKS",
+        "STATUS"
+      ],
+
+      "Supply Chain Department": [
+        "No.",
+        "Badge #",
+        "Name",
+        "Designation",
+        "Department / Sponsoring Department",
+        "Company",
+        "Department",
+        "Vac 1",
+        "Date1",
+        "Vac 2",
+        "Date 2",
+        "Vaccine Center",
+        "Booster Due",
+        "Booster Due Date",
+        "Booster",
+        "Booster Vac date",
+        "Place of Residence",
+        "Nationality",
+        "Contract Type",
+        "STAYING IN CAMP",
+        "ON / OFF",
+        "LN / E",
+        "Remark"
+      ],
+
+      "PR Sequence Number": [
+        "SR NO.",
+        "DATE",
+        "MRF SEQUENCE NUMBER",
+        "INVOICE NUMBER",
+        "PR NUMBER",
+        "ISSUED TO",
+        "LOCAL / OVERSEAS",
+        "REMARKS"
+      ],
+
+      "GATE PASS-POD": [
+        "SR NO.",
+        "DATE",
+        "GATE PASS NO.",
+        "ITEM CODE",
+        "SERIAL NUMBER",
+        "ITEM DESCRIPTION",
+        "UNIT",
+        "QTY",
+        "CONSIGNEE",
+        "INV / POD REF. NO",
+        "WORK ORDER",
+        "PR NUMBER",
+        "SENT",
+        "DELIVERED TO KM",
+        "REMARKS"
+      ],
+
+      "EQUIPMENT CERTIFICATE": [
+        "NO.",
+        "EQUIPMENT DESCRIPTION",
+        "QTY",
+        "LOCATION",
+        "CERTI NO",
+        "VENDOR",
+        "TEST DATE",
+        "EXPIRY DATE",
+        "STATUS",
+        "VARIANCE IN DAYS",
+        "REMARKS"
+      ],
+
+      "KM Shipping Invoice": [
+        "Sr No.",
+        "Date",
+        "Invoice / P.L.No:",
+        "PR Nos.",
+        "Item Description",
+        "QTY",
+        "Delivery Address / Destination",
+        "Country",
+        "Status",
+        "Remarks"
+      ],
+
+      "INVOICE TRACKING REPORT": [
+        "SR NO.",
+        "INVOICE NUMBER",
+        "PR NUMBER",
+        "PONUMBER",
+        "SUPPLIER",
+        "IAAR / WO REF. NO.",
+        "RECEIPT DATE",
+        "REQUESTED BY",
+        "DEPARTMENT",
+        "LOCAL / OVERSEAS",
+        "INSPECTED BY END-USER",
+        "REMARKS"
+      ]
+    };
+
+    // In-memory data store: sheet name -> array of row objects
+    const dataStore = {};
+    Object.keys(sheetsConfig).forEach((name) => {
+      dataStore[name] = [];
+    });
+
+    const LOCAL_STORAGE_KEY = "reportsConsoleStore_v3";
+
+    let currentSheet = null;
+    let editIndex = null;
+    let rowSearchQuery = "";
+    let sheetSearchQuery = "";
+    let currentPage = 1;
+    let pageSize = 50;
+    let sortField = null;
+    let sortDirection = "asc";
+
+    // DOM references
+    const sheetListEl = document.getElementById("sheetList");
+    const sheetsCountEl = document.getElementById("sheetsCount");
+    const sheetSearchEl = document.getElementById("sheetSearch");
+
+    const sheetTitleEl = document.getElementById("sheetTitle");
+    const sheetSubtitleEl = document.getElementById("sheetSubtitle");
+    const fieldsCountTagEl = document.getElementById("fieldsCountTag");
+    const rowsCountTagEl = document.getElementById("rowsCountTag");
+    const rowStatsEl = document.getElementById("rowStats");
+
+    const formEl = document.getElementById("dataForm");
+    const saveRowBtn = document.getElementById("saveRowBtn");
+    const clearFormBtn = document.getElementById("clearFormBtn");
+    const cancelEditBtn = document.getElementById("cancelEditBtn");
+    const messageEl = document.getElementById("message");
+    const editIndicatorEl = document.getElementById("editIndicator");
+    const autosaveIndicatorEl = document.getElementById("autosaveIndicator");
+
+    const openAddRowBtn = document.getElementById("openAddRowBtn");
+    const rowModalEl = document.getElementById("rowModal");
+    const modalTitleEl = document.getElementById("modalTitle");
+    const closeModalBtn = document.getElementById("closeModalBtn");
+
+    const exportSheetJsonBtn = document.getElementById("exportSheetJsonBtn");
+    const exportSheetCsvBtn = document.getElementById("exportSheetCsvBtn");
+    const clearSheetBtn = document.getElementById("clearSheetBtn");
+
+    const tableEl = document.getElementById("dataTable");
+    const noDataMsgEl = document.getElementById("noDataMsg");
+    const rowSearchEl = document.getElementById("rowSearch");
+    const pageSizeSelectEl = document.getElementById("pageSizeSelect");
+    const paginationEl = document.getElementById("pagination");
+
+    const exportJsonBtn = document.getElementById("exportJsonBtn");
+    const importJsonInput = document.getElementById("importJsonInput");
+
+    // Helpers
+
+    function guessInputType(fieldName) {
+      const upper = fieldName.toUpperCase();
+      if (upper.includes("DATE")) return "date";
+      return "text";
+    }
+
+    function fieldId(fieldName, index) {
+      return (
+        "field_" +
+        index +
+        "_" +
+        fieldName
+          .toString()
+          .replace(/[^a-zA-Z0-9]+/g, "_")
+      );
+    }
+
+    function showMessage(text, type) {
+      messageEl.textContent = text || "";
+      messageEl.className = type ? type : "";
+    }
+
+    function setEditIndicator(index) {
+      if (index === null || index === undefined) {
+        editIndicatorEl.style.display = "none";
+        editIndicatorEl.textContent = "";
+        return;
+      }
+      editIndicatorEl.style.display = "inline-flex";
+      editIndicatorEl.textContent = "Editing row #" + (index + 1);
+    }
+
+    function setAutosaveIndicator() {
+      const now = new Date();
+      autosaveIndicatorEl.textContent =
+        "Auto-saved locally at " + now.toLocaleTimeString();
+    }
+
+    function clearForm() {
+      Array.from(formEl.elements).forEach((el) => {
+        if (el.tagName === "INPUT") {
+          el.value = "";
+        }
+      });
+      editIndex = null;
+      setEditIndicator(null);
+    }
+
+    function collectRowData() {
+      if (!currentSheet) return null;
+      const fields = sheetsConfig[currentSheet] || [];
+      const row = {};
+      let hasAnyValue = false;
+
+      fields.forEach((fieldName, index) => {
+        const id = fieldId(fieldName, index);
+        const input = document.getElementById(id);
+        const rawValue = input && input.value != null ? input.value : "";
+        const value =
+          typeof rawValue === "string" ? rawValue.trim() : rawValue;
+        if (value !== "") {
+          hasAnyValue = true;
+        }
+        row[fieldName] = value;
+      });
+
+      return { row, hasAnyValue };
+    }
+
+    function populateFormFromRow(row) {
+      if (!currentSheet || !row) return;
+      const fields = sheetsConfig[currentSheet] || [];
+      fields.forEach((fieldName, index) => {
+        const id = fieldId(fieldName, index);
+        const input = document.getElementById(id);
+        if (input) {
+          input.value = row[fieldName] ?? "";
+        }
+      });
+    }
+
+    // Modal
+
+    function openModal(mode, index) {
+      if (!currentSheet) {
+        showMessage("Please select a sheet first.", "error");
+        return;
+      }
+      if (mode === "create") {
+        clearForm();
+        modalTitleEl.textContent = "Add new row";
+        editIndex = null;
+        setEditIndicator(null);
+      } else if (mode === "edit") {
+        const rows = dataStore[currentSheet] || [];
+        if (index == null || index < 0 || index >= rows.length) return;
+        editIndex = index;
+        populateFormFromRow(rows[index]);
+        modalTitleEl.textContent = "Edit row #" + (index + 1);
+        setEditIndicator(index);
+      }
+      rowModalEl.style.display = "flex";
+    }
+
+    function closeModal() {
+      rowModalEl.style.display = "none";
+    }
+
+    // Local storage
+
+    function saveToLocalStorage() {
+      try {
+        const payload = JSON.stringify(dataStore);
+        window.localStorage.setItem(LOCAL_STORAGE_KEY, payload);
+        setAutosaveIndicator();
+      } catch (err) {
+        console.warn("Failed to save to localStorage:", err);
+      }
+    }
+
+    function loadFromLocalStorage() {
+      try {
+        const raw = window.localStorage.getItem(LOCAL_STORAGE_KEY);
+        if (!raw) return;
+        const parsed = JSON.parse(raw);
+        Object.keys(sheetsConfig).forEach((sheetName) => {
+          if (Array.isArray(parsed[sheetName])) {
+            dataStore[sheetName] = parsed[sheetName];
+          }
+        });
+        if (Object.keys(parsed).length > 0) {
+          setAutosaveIndicator();
+        }
+      } catch (err) {
+        console.warn("Failed to load from localStorage:", err);
+      }
+    }
+
+    // Sheet list
+
+    function renderSheetList() {
+      const allSheetNames = Object.keys(sheetsConfig);
+      sheetsCountEl.textContent = allSheetNames.length + " sheets";
+
+      const filtered = allSheetNames.filter((name) =>
+        name.toLowerCase().includes(sheetSearchQuery.toLowerCase())
+      );
+
+      sheetListEl.innerHTML = "";
+      filtered.forEach((name) => {
+        const li = document.createElement("li");
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className =
+          "sheet-btn" + (name === currentSheet ? " active" : "");
+        const spanName = document.createElement("span");
+        spanName.className = "name";
+        spanName.textContent = name;
+        const spanCount = document.createElement("span");
+        spanCount.className = "fields-count";
+        spanCount.textContent =
+          (sheetsConfig[name] ? sheetsConfig[name].length : 0) + " fields";
+        btn.appendChild(spanName);
+        btn.appendChild(spanCount);
+        btn.addEventListener("click", () => selectSheet(name));
+        li.appendChild(btn);
+        sheetListEl.appendChild(li);
+      });
+
+      if (!filtered.length) {
+        const li = document.createElement("li");
+        li.style.fontSize = "12px";
+        li.style.color = "#9ca3af";
+        li.textContent = "No sheets match your search.";
+        sheetListEl.appendChild(li);
+      }
+    }
+
+    function selectSheet(name) {
+      currentSheet = name;
+      editIndex = null;
+      sortField = null;
+      sortDirection = "asc";
+      setEditIndicator(null);
+      rowSearchQuery = "";
+      rowSearchEl.value = "";
+      currentPage = 1;
+      showMessage("", "");
+      renderSheetList();
+      renderForm();
+      renderSheetHeaderSummary();
+      renderTable();
+    }
+
+    function renderSheetHeaderSummary() {
+      if (!currentSheet) {
+        sheetTitleEl.textContent = "Select a sheet from the left sidebar";
+        sheetSubtitleEl.textContent =
+          "Sheet fields and names are automatically synced with your Excel file structure.";
+        fieldsCountTagEl.textContent = "0 fields";
+        rowsCountTagEl.textContent = "0 rows";
+        rowStatsEl.textContent = "";
+        return;
+      }
+      const fields = sheetsConfig[currentSheet] || [];
+      const rows = dataStore[currentSheet] || [];
+      sheetTitleEl.textContent = currentSheet;
+      sheetSubtitleEl.textContent =
+        "This sheet has " +
+        fields.length +
+        " fields. Use the Add row button to manage data.";
+      fieldsCountTagEl.textContent = fields.length + " fields";
+      rowsCountTagEl.textContent = rows.length + " rows total";
+      rowStatsEl.textContent = "Total rows: " + rows.length;
+    }
+
+    // Form rendering
+
+    function renderForm() {
+      formEl.innerHTML = "";
+      if (!currentSheet) return;
+
+      const fields = sheetsConfig[currentSheet] || [];
+      fields.forEach((fieldName, index) => {
+        const group = document.createElement("div");
+        group.className = "form-group";
+
+        const label = document.createElement("label");
+        label.textContent = fieldName;
+        const input = document.createElement("input");
+        input.type = guessInputType(fieldName);
+        input.id = fieldId(fieldName, index);
+        input.name = input.id;
+
+        group.appendChild(label);
+        group.appendChild(input);
+        formEl.appendChild(group);
+      });
+    }
+
+    // Sorting & filtering helpers
+
+    function compareValues(a, b) {
+      if (a === null || a === undefined) a = "";
+      if (b === null || b === undefined) b = "";
+      const strA = String(a).toLowerCase();
+      const strB = String(b).toLowerCase();
+      if (strA < strB) return -1;
+      if (strA > strB) return 1;
+      return 0;
+    }
+
+    function getFilteredAndSortedRows() {
+      if (!currentSheet) return [];
+      const rows = dataStore[currentSheet] || [];
+      const fields = sheetsConfig[currentSheet] || [];
+
+      let result = rows;
+
+      if (rowSearchQuery.trim()) {
+        const query = rowSearchQuery.toLowerCase();
+        result = result.filter((row) =>
+          fields.some((fieldName) => {
+            const value = row[fieldName];
+            if (value == null) return false;
+            return String(value).toLowerCase().includes(query);
+          })
+        );
+      }
+
+      if (sortField) {
+        result = [...result].sort((a, b) => {
+          const cmp = compareValues(a[sortField], b[sortField]);
+          return sortDirection === "asc" ? cmp : -cmp;
+        });
+      }
+
+      return result;
+    }
+
+    // Pagination
+
+    function renderPagination(filteredRows) {
+      if (!currentSheet) {
+        paginationEl.innerHTML = "";
+        return;
+      }
+
+      const total = filteredRows.length;
+      const totalPages = Math.max(1, Math.ceil(total / pageSize));
+      if (currentPage > totalPages) currentPage = totalPages;
+
+      const startIndex = (currentPage - 1) * pageSize + 1;
+      const endIndex = Math.min(currentPage * pageSize, total);
+
+      const infoText =
+        "Showing " +
+        (total ? startIndex + "–" + endIndex : "0") +
+        " of " +
+        total +
+        " rows" +
+        (rowSearchQuery.trim() ? " (filtered)" : "");
+
+      const container = document.createElement("div");
+      container.className = "pagination";
+
+      const infoSpan = document.createElement("div");
+      infoSpan.textContent = infoText;
+      container.appendChild(infoSpan);
+
+      const controls = document.createElement("div");
+      controls.className = "pagination-controls";
+
+      const prevBtn = document.createElement("button");
+      prevBtn.type = "button";
+      prevBtn.className = "pagination-btn";
+      prevBtn.textContent = "Prev";
+      prevBtn.disabled = currentPage <= 1;
+      prevBtn.addEventListener("click", () => {
+        if (currentPage > 1) {
+          currentPage -= 1;
+          renderTable();
+        }
+      });
+
+      const pageInfo = document.createElement("span");
+      pageInfo.textContent = "Page " + currentPage + " / " + totalPages;
+
+      const nextBtn = document.createElement("button");
+      nextBtn.type = "button";
+      nextBtn.className = "pagination-btn";
+      nextBtn.textContent = "Next";
+      nextBtn.disabled = currentPage >= totalPages;
+      nextBtn.addEventListener("click", () => {
+        if (currentPage < totalPages) {
+          currentPage += 1;
+          renderTable();
+        }
+      });
+
+      controls.appendChild(prevBtn);
+      controls.appendChild(pageInfo);
+      controls.appendChild(nextBtn);
+
+      container.appendChild(controls);
+      paginationEl.innerHTML = "";
+      paginationEl.appendChild(container);
+    }
+
+    // Table
+
+    function renderTable() {
+      tableEl.innerHTML = "";
+      noDataMsgEl.textContent = "";
+      paginationEl.innerHTML = "";
+
+      if (!currentSheet) return;
+
+      const fields = sheetsConfig[currentSheet] || [];
+      const allRows = dataStore[currentSheet] || [];
+      const filteredRows = getFilteredAndSortedRows();
+
+      const total = allRows.length;
+
+      rowsCountTagEl.textContent = total + " rows total";
+      if (rowSearchQuery.trim()) {
+        rowStatsEl.textContent =
+          "Filtered rows: " + filteredRows.length + " of " + total;
+      } else {
+        rowStatsEl.textContent = "Total rows: " + total;
+      }
+
+      if (!fields.length) {
+        noDataMsgEl.textContent =
+          "No fields are defined for this sheet in the configuration.";
+        return;
+      }
+
+      if (!filteredRows.length) {
+        if (total === 0) {
+          noDataMsgEl.textContent =
+            "No data entered yet. Use the Add row button to insert data.";
+        } else {
+          noDataMsgEl.textContent =
+            "No rows match your search. Clear the search to see all rows.";
+        }
+        return;
+      }
+
+      const totalPages = Math.max(1, Math.ceil(filteredRows.length / pageSize));
+      if (currentPage > totalPages) currentPage = totalPages;
+
+      const start = (currentPage - 1) * pageSize;
+      const end = Math.min(start + pageSize, filteredRows.length);
+      const pageRows = filteredRows.slice(start, end);
+
+      const thead = document.createElement("thead");
+      const headerRow = document.createElement("tr");
+
+      fields.forEach((fieldName) => {
+        const th = document.createElement("th");
+        th.className = "sortable";
+        const textSpan = document.createElement("span");
+        textSpan.textContent = fieldName;
+        th.appendChild(textSpan);
+
+        const sortSpan = document.createElement("span");
+        sortSpan.className = "sort-indicator";
+        if (sortField === fieldName) {
+          sortSpan.textContent = sortDirection === "asc" ? "▲" : "▼";
+        } else {
+          sortSpan.textContent = "⇅";
+        }
+        th.appendChild(sortSpan);
+
+        th.addEventListener("click", () => {
+          if (sortField === fieldName) {
+            sortDirection = sortDirection === "asc" ? "desc" : "asc";
+          } else {
+            sortField = fieldName;
+            sortDirection = "asc";
+          }
+          renderTable();
+        });
+
+        headerRow.appendChild(th);
+      });
+
+      const actionsTh = document.createElement("th");
+      actionsTh.textContent = "Actions";
+      headerRow.appendChild(actionsTh);
+
+      thead.appendChild(headerRow);
+      tableEl.appendChild(thead);
+
+      const tbody = document.createElement("tbody");
+      pageRows.forEach((row) => {
+        const realIndex = allRows.indexOf(row);
+        const tr = document.createElement("tr");
+
+        fields.forEach((fieldName) => {
+          const td = document.createElement("td");
+          const v = row[fieldName];
+          td.textContent = v == null ? "" : String(v);
+          tr.appendChild(td);
+        });
+
+        const actionsTd = document.createElement("td");
+        const actionsDiv = document.createElement("div");
+        actionsDiv.className = "table-actions";
+
+        const editBtn = document.createElement("button");
+        editBtn.type = "button";
+        editBtn.className = "table-btn table-btn-edit";
+        editBtn.textContent = "Edit";
+        editBtn.addEventListener("click", () => {
+          startEditRow(realIndex);
+        });
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.type = "button";
+        deleteBtn.className = "table-btn table-btn-delete";
+        deleteBtn.textContent = "Delete";
+        deleteBtn.addEventListener("click", () => {
+          deleteRow(realIndex);
+        });
+
+        actionsDiv.appendChild(editBtn);
+        actionsDiv.appendChild(deleteBtn);
+        actionsTd.appendChild(actionsDiv);
+        tr.appendChild(actionsTd);
+
+        // Double click on row to edit
+        tr.addEventListener("dblclick", () => {
+          startEditRow(realIndex);
+        });
+
+        tbody.appendChild(tr);
+      });
+
+      tableEl.appendChild(tbody);
+
+      renderPagination(filteredRows);
+    }
+
+    function startEditRow(index) {
+      if (!currentSheet) return;
+      const rows = dataStore[currentSheet] || [];
+      if (index < 0 || index >= rows.length) return;
+      openModal("edit", index);
+      showMessage(
+        'You are editing an existing row. Update fields and click "Save row".',
+        "success"
+      );
+    }
+
+    function deleteRow(index) {
+      if (!currentSheet) return;
+      const rows = dataStore[currentSheet] || [];
+      if (index < 0 || index >= rows.length) return;
+
+      const confirmed = window.confirm("Delete row #" + (index + 1) + " ?");
+      if (!confirmed) return;
+
+      rows.splice(index, 1);
+      if (editIndex === index) {
+        clearForm();
+      } else if (editIndex !== null && index < editIndex) {
+        editIndex -= 1;
+      }
+      saveToLocalStorage();
+      renderSheetHeaderSummary();
+      renderTable();
+      showMessage("Row deleted.", "success");
+    }
+
+    // Actions
+
+    function handleSaveRow() {
+      if (!currentSheet) {
+        showMessage("Please select a sheet first.", "error");
+        return;
+      }
+
+      const fields = sheetsConfig[currentSheet] || [];
+      if (!fields.length) {
+        showMessage("No fields defined for this sheet.", "error");
+        return;
+      }
+
+      const result = collectRowData();
+      if (!result) {
+        showMessage("Unexpected error reading form fields.", "error");
+        return;
+      }
+
+      const { row, hasAnyValue } = result;
+      if (!hasAnyValue) {
+        showMessage("Please fill at least one field before saving.", "error");
+        return;
+      }
+
+      const rows = dataStore[currentSheet];
+
+      if (editIndex === null || editIndex === undefined) {
+        rows.push(row);
+        showMessage("Row saved successfully.", "success");
+      } else {
+        rows[editIndex] = row;
+        showMessage("Row updated successfully.", "success");
+      }
+
+      clearForm();
+      closeModal();
+      saveToLocalStorage();
+      renderSheetHeaderSummary();
+      renderTable();
+    }
+
+    function handleExportAllJson() {
+      try {
+        const blob = new Blob([JSON.stringify(dataStore, null, 2)], {
+          type: "application/json"
+        });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "sheets-data.json";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showMessage("All sheets exported as JSON.", "success");
+      } catch (err) {
+        console.error(err);
+        showMessage("Error exporting JSON.", "error");
+      }
+    }
+
+    function handleImportJson(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const imported = JSON.parse(e.target.result);
+
+          let importedSheetsCount = 0;
+          Object.keys(sheetsConfig).forEach((sheetName) => {
+            if (Array.isArray(imported[sheetName])) {
+              dataStore[sheetName] = imported[sheetName];
+              importedSheetsCount += 1;
+            }
+          });
+
+          saveToLocalStorage();
+          renderSheetHeaderSummary();
+          renderTable();
+          showMessage(
+            "Data imported from JSON for " +
+              importedSheetsCount +
+              " sheet(s).",
+            "success"
+          );
+        } catch (err) {
+          console.error(err);
+          showMessage("Error reading JSON file.", "error");
+        } finally {
+          event.target.value = "";
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function handleExportCurrentSheetJson() {
+      if (!currentSheet) {
+        showMessage("Please select a sheet first.", "error");
+        return;
+      }
+      const rows = dataStore[currentSheet] || [];
+      const payload = {};
+      payload[currentSheet] = rows;
+
+      try {
+        const blob = new Blob([JSON.stringify(payload, null, 2)], {
+          type: "application/json"
+        });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = currentSheet.replace(/\s+/g, "_") + ".json";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showMessage("Current sheet exported as JSON.", "success");
+      } catch (err) {
+        console.error(err);
+        showMessage("Error exporting sheet JSON.", "error");
+      }
+    }
+
+    function handleExportCurrentSheetCsv() {
+      if (!currentSheet) {
+        showMessage("Please select a sheet first.", "error");
+        return;
+      }
+      const fields = sheetsConfig[currentSheet] || [];
+      const rows = dataStore[currentSheet] || [];
+
+      if (!fields.length) {
+        showMessage("No fields defined for this sheet.", "error");
+        return;
+      }
+
+      let csv = "";
+      csv +=
+        fields
+          .map((f) => '"' + String(f).replace(/"/g, '""') + '"')
+          .join(",") + "\n";
+
+      rows.forEach((row) => {
+        const line = fields
+          .map((f) => {
+            const v = row[f] == null ? "" : String(row[f]);
+            return '"' + v.replace(/"/g, '""') + '"';
+          })
+          .join(",");
+        csv += line + "\n";
+      });
+
+      try {
+        const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = currentSheet.replace(/\s+/g, "_") + ".csv";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showMessage("Current sheet exported as CSV.", "success");
+      } catch (err) {
+        console.error(err);
+        showMessage("Error exporting sheet CSV.", "error");
+      }
+    }
+
+    function handleClearCurrentSheet() {
+      if (!currentSheet) {
+        showMessage("Please select a sheet first.", "error");
+        return;
+      }
+      const confirmed = window.confirm(
+        'This will remove ALL rows from "' +
+          currentSheet +
+          '" in local storage. Continue?'
+      );
+      if (!confirmed) return;
+
+      dataStore[currentSheet] = [];
+      saveToLocalStorage();
+      clearForm();
+      renderSheetHeaderSummary();
+      renderTable();
+      showMessage("Current sheet cleared.", "success");
+    }
+
+    // Event bindings
+
+    saveRowBtn.addEventListener("click", handleSaveRow);
+    clearFormBtn.addEventListener("click", clearForm);
+    cancelEditBtn.addEventListener("click", () => {
+      clearForm();
+      closeModal();
+      showMessage("Edit cancelled.", "success");
+    });
+
+    openAddRowBtn.addEventListener("click", () => openModal("create"));
+    closeModalBtn.addEventListener("click", () => {
+      closeModal();
+    });
+    rowModalEl.addEventListener("click", (e) => {
+      if (e.target === rowModalEl) {
+        closeModal();
+      }
+    });
+
+    exportJsonBtn.addEventListener("click", handleExportAllJson);
+    importJsonInput.addEventListener("change", handleImportJson);
+
+    exportSheetJsonBtn.addEventListener("click", handleExportCurrentSheetJson);
+    exportSheetCsvBtn.addEventListener("click", handleExportCurrentSheetCsv);
+    clearSheetBtn.addEventListener("click", handleClearCurrentSheet);
+
+    rowSearchEl.addEventListener("input", (e) => {
+      rowSearchQuery = e.target.value || "";
+      currentPage = 1;
+      renderTable();
+    });
+
+    sheetSearchEl.addEventListener("input", (e) => {
+      sheetSearchQuery = e.target.value || "";
+      renderSheetList();
+    });
+
+    pageSizeSelectEl.addEventListener("change", (e) => {
+      pageSize = parseInt(e.target.value, 10) || 50;
+      currentPage = 1;
+      renderTable();
+    });
+
+    // Initial load
+
+    window.addEventListener("load", () => {
+      loadFromLocalStorage();
+      renderSheetList();
+      const first = Object.keys(sheetsConfig)[0];
+      if (first) {
+        selectSheet(first);
+      } else {
+        renderSheetHeaderSummary();
+      }
+    });
+  </script>
+</body>
+</html>
