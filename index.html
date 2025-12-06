@@ -30,6 +30,9 @@
       justify-content: space-between;
       gap: 12px;
       box-shadow: 0 2px 6px rgba(15,23,42,0.25);
+      position: sticky;
+      top: 0;
+      z-index: 50;
     }
 
     .app-header-title {
@@ -59,13 +62,13 @@
 
     .sidebar {
       width: 280px;
-      background: #111827;
+      background: #020617;
       color: #e5e7eb;
       padding: 16px;
       display: flex;
       flex-direction: column;
       gap: 12px;
-      border-right: 1px solid #1f2937;
+      border-right: 1px solid #111827;
     }
 
     .sidebar-section-title {
@@ -85,9 +88,9 @@
 
     .sidebar-search {
       width: 100%;
-      padding: 6px 8px;
-      border-radius: 6px;
-      border: 1px solid #374151;
+      padding: 7px 10px;
+      border-radius: 8px;
+      border: 1px solid #1e293b;
       background: #020617;
       color: #e5e7eb;
       font-size: 12px;
@@ -100,7 +103,7 @@
     .sheet-list {
       list-style: none;
       padding: 0;
-      margin: 0;
+      margin: 8px 0 0 0;
       max-height: 50vh;
       overflow-y: auto;
     }
@@ -113,8 +116,8 @@
       width: 100%;
       border: none;
       padding: 8px 10px;
-      border-radius: 6px;
-      background: #111827;
+      border-radius: 8px;
+      background: #020617;
       color: #e5e7eb;
       text-align: left;
       cursor: pointer;
@@ -140,8 +143,8 @@
     }
 
     .sheet-btn:hover {
-      background: #1f2937;
-      border-color: #374151;
+      background: #0b1120;
+      border-color: #1e293b;
       transform: translateY(-1px);
     }
 
@@ -153,7 +156,7 @@
     }
 
     .json-controls {
-      border-top: 1px solid #1f2937;
+      border-top: 1px solid #111827;
       padding-top: 10px;
       margin-top: 4px;
       font-size: 12px;
@@ -168,8 +171,8 @@
       align-items: center;
       justify-content: center;
       gap: 4px;
-      border-radius: 6px;
-      padding: 7px 10px;
+      border-radius: 999px;
+      padding: 8px 12px;
       border: none;
       cursor: pointer;
       font-size: 12px;
@@ -224,7 +227,7 @@
     .main-card {
       background: #ffffff;
       border-radius: 14px;
-      padding: 16px 18px;
+      padding: 18px 20px;
       box-shadow: 0 10px 24px rgba(15,23,42,0.08);
       display: flex;
       flex-direction: column;
@@ -239,7 +242,7 @@
       justify-content: space-between;
       gap: 10px;
       border-bottom: 1px solid #e5e7eb;
-      padding-bottom: 8px;
+      padding-bottom: 10px;
     }
 
     .main-header-left {
@@ -251,6 +254,8 @@
     .main-header-title {
       font-size: 18px;
       margin: 0;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
     }
 
     .main-header-sub {
@@ -313,15 +318,6 @@
       background: #d1d5db;
     }
 
-    .btn-danger {
-      background: #ef4444;
-      color: #fef2f2;
-    }
-
-    .btn-danger:hover {
-      background: #f97373;
-    }
-
     form {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
@@ -344,7 +340,7 @@
     input[type="number"],
     input[type="date"] {
       padding: 7px 8px;
-      border-radius: 6px;
+      border-radius: 8px;
       border: 1px solid #d1d5db;
       font-size: 13px;
     }
@@ -360,7 +356,7 @@
       flex-wrap: wrap;
       align-items: center;
       gap: 8px;
-      margin-top: 4px;
+      margin-top: 2px;
       font-size: 12px;
     }
 
@@ -401,12 +397,26 @@
       color: #6b7280;
     }
 
+    .table-search-group {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
     .table-search {
       padding: 6px 8px;
-      border-radius: 6px;
+      border-radius: 8px;
       border: 1px solid #d1d5db;
       font-size: 12px;
-      min-width: 200px;
+      min-width: 180px;
+    }
+
+    .page-size-select {
+      padding: 6px 8px;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      font-size: 12px;
     }
 
     .table-wrapper {
@@ -415,6 +425,7 @@
       border-radius: 10px;
       border: 1px solid #e5e7eb;
       background: #f9fafb;
+      max-height: calc(100vh - 320px);
     }
 
     table {
@@ -435,6 +446,9 @@
       background: #f3f4f6;
       font-weight: 600;
       white-space: nowrap;
+      position: sticky;
+      top: 0;
+      z-index: 5;
     }
 
     tr:nth-child(even) td {
@@ -484,6 +498,44 @@
       background: #fecaca;
     }
 
+    /* Pagination */
+
+    .pagination {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 8px;
+      font-size: 11px;
+      color: #6b7280;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .pagination-controls {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .pagination-btn {
+      border-radius: 999px;
+      border: 1px solid #d1d5db;
+      background: #ffffff;
+      padding: 3px 10px;
+      font-size: 11px;
+      cursor: pointer;
+    }
+
+    .pagination-btn:hover:not(:disabled) {
+      background: #e5e7eb;
+    }
+
+    .pagination-btn:disabled {
+      opacity: 0.4;
+      cursor: default;
+    }
+
     @media (max-width: 900px) {
       .app-body {
         flex-direction: column;
@@ -491,10 +543,13 @@
       .sidebar {
         width: 100%;
         border-right: none;
-        border-bottom: 1px solid #1f2937;
+        border-bottom: 1px solid #111827;
       }
       .main-card {
         min-height: auto;
+      }
+      .table-wrapper {
+        max-height: none;
       }
     }
   </style>
@@ -504,7 +559,9 @@
     <header class="app-header">
       <div>
         <div class="app-header-title">Sheets Data Entry Platform</div>
-        <div class="app-header-sub">Multi-sheet data entry, edit, search, and JSON import/export</div>
+        <div class="app-header-sub">
+          Multi-sheet data entry, edit, search, pagination, and JSON import/export
+        </div>
       </div>
       <div class="app-header-right">
         <div>Data is also saved locally in your browser (localStorage).</div>
@@ -552,7 +609,9 @@
         <section class="main-card">
           <div class="main-header">
             <div class="main-header-left">
-              <h2 id="sheetTitle" class="main-header-title">Select a sheet from the left sidebar</h2>
+              <h2 id="sheetTitle" class="main-header-title">
+                Select a sheet from the left sidebar
+              </h2>
               <div id="sheetSubtitle" class="main-header-sub">
                 Sheet fields and names are automatically generated from your Excel file.
               </div>
@@ -566,16 +625,22 @@
                   <span id="rowsCountTag">0 rows</span>
                 </span>
               </div>
-              <div>Click a row to edit it, or add new rows from the form below.</div>
+              <div>Use the form below to add or edit rows.</div>
             </div>
           </div>
 
           <div class="form-header-row">
             <div class="form-title">Row data</div>
             <div class="form-actions">
-              <button id="saveRowBtn" class="btn btn-primary" type="button">Save row</button>
-              <button id="clearFormBtn" class="btn btn-secondary" type="button">Clear form</button>
-              <button id="cancelEditBtn" class="btn btn-secondary" type="button" style="display:none;">Cancel edit</button>
+              <button id="saveRowBtn" class="btn btn-primary" type="button">
+                Save row
+              </button>
+              <button id="clearFormBtn" class="btn btn-secondary" type="button">
+                Clear form
+              </button>
+              <button id="cancelEditBtn" class="btn btn-secondary" type="button" style="display:none;">
+                Cancel edit
+              </button>
             </div>
           </div>
 
@@ -588,25 +653,34 @@
 
           <div class="table-header-row">
             <div class="row-stats" id="rowStats"></div>
-            <input
-              id="rowSearch"
-              class="table-search"
-              type="text"
-              placeholder="Search rows in this sheet..."
-            />
+            <div class="table-search-group">
+              <input
+                id="rowSearch"
+                class="table-search"
+                type="text"
+                placeholder="Search rows in this sheet..."
+              />
+              <select id="pageSizeSelect" class="page-size-select">
+                <option value="25">25 rows / page</option>
+                <option value="50" selected>50 rows / page</option>
+                <option value="100">100 rows / page</option>
+              </select>
+            </div>
           </div>
 
           <div class="table-wrapper">
             <table id="dataTable"></table>
           </div>
           <div id="noDataMsg" class="no-data"></div>
+
+          <div id="pagination" class="pagination"></div>
         </section>
       </main>
     </div>
   </div>
 
   <script>
-    // Sheets configuration based on your Excel file (columns names cleaned from extra spaces)
+    // Sheets configuration based on your Excel file
     const sheetsConfig = {
       "QC Sequence Number": [
         "SR NO.",
@@ -692,7 +766,7 @@
         "STATUS"
       ],
 
-      "Supply Chain Department ": [
+      "Supply Chain Department": [
         "No.",
         "Badge #",
         "Name",
@@ -802,6 +876,8 @@
     let editIndex = null;
     let rowSearchQuery = "";
     let sheetSearchQuery = "";
+    let currentPage = 1;
+    let pageSize = 50;
 
     // DOM references
     const sheetListEl = document.getElementById("sheetList");
@@ -824,6 +900,8 @@
     const tableEl = document.getElementById("dataTable");
     const noDataMsgEl = document.getElementById("noDataMsg");
     const rowSearchEl = document.getElementById("rowSearch");
+    const pageSizeSelectEl = document.getElementById("pageSizeSelect");
+    const paginationEl = document.getElementById("pagination");
 
     const exportJsonBtn = document.getElementById("exportJsonBtn");
     const importJsonInput = document.getElementById("importJsonInput");
@@ -979,6 +1057,7 @@
       setEditIndicator(null);
       rowSearchQuery = "";
       rowSearchEl.value = "";
+      currentPage = 1;
       showMessage("", "");
       renderSheetList();
       renderForm();
@@ -1032,7 +1111,7 @@
       });
     }
 
-    // Table
+    // Table & pagination
 
     function getFilteredRows() {
       if (!currentSheet) return [];
@@ -1050,27 +1129,90 @@
       );
     }
 
+    function renderPagination(totalRows, visibleRows, filteredRows) {
+      if (!currentSheet) {
+        paginationEl.innerHTML = "";
+        return;
+      }
+
+      const total = filteredRows.length;
+      const totalPages = Math.max(1, Math.ceil(total / pageSize));
+      if (currentPage > totalPages) currentPage = totalPages;
+
+      const startIndex = (currentPage - 1) * pageSize + 1;
+      const endIndex = Math.min(currentPage * pageSize, total);
+
+      const infoText =
+        "Showing " +
+        (total ? startIndex + "–" + endIndex : "0") +
+        " of " +
+        total +
+        " rows" +
+        (rowSearchQuery.trim() ? " (filtered)" : "");
+
+      const container = document.createElement("div");
+      container.className = "pagination";
+
+      const infoSpan = document.createElement("div");
+      infoSpan.textContent = infoText;
+      container.appendChild(infoSpan);
+
+      const controls = document.createElement("div");
+      controls.className = "pagination-controls";
+
+      const prevBtn = document.createElement("button");
+      prevBtn.type = "button";
+      prevBtn.className = "pagination-btn";
+      prevBtn.textContent = "Prev";
+      prevBtn.disabled = currentPage <= 1;
+      prevBtn.addEventListener("click", () => {
+        if (currentPage > 1) {
+          currentPage -= 1;
+          renderTable();
+        }
+      });
+
+      const pageInfo = document.createElement("span");
+      pageInfo.textContent = "Page " + currentPage + " / " + totalPages;
+
+      const nextBtn = document.createElement("button");
+      nextBtn.type = "button";
+      nextBtn.className = "pagination-btn";
+      nextBtn.textContent = "Next";
+      nextBtn.disabled = currentPage >= totalPages;
+      nextBtn.addEventListener("click", () => {
+        if (currentPage < totalPages) {
+          currentPage += 1;
+          renderTable();
+        }
+      });
+
+      controls.appendChild(prevBtn);
+      controls.appendChild(pageInfo);
+      controls.appendChild(nextBtn);
+
+      container.appendChild(controls);
+      paginationEl.innerHTML = "";
+      paginationEl.appendChild(container);
+    }
+
     function renderTable() {
       tableEl.innerHTML = "";
       noDataMsgEl.textContent = "";
+      paginationEl.innerHTML = "";
 
       if (!currentSheet) return;
 
       const fields = sheetsConfig[currentSheet] || [];
       const allRows = dataStore[currentSheet] || [];
-      const rows = getFilteredRows();
+      const filteredRows = getFilteredRows();
 
       const total = allRows.length;
-      const visible = rows.length;
 
       rowsCountTagEl.textContent = total + " rows total";
       if (rowSearchQuery.trim()) {
         rowStatsEl.textContent =
-          "Showing " +
-          visible +
-          " of " +
-          total +
-          " rows (filtered by search).";
+          "Filtered rows: " + filteredRows.length + " of " + total;
       } else {
         rowStatsEl.textContent = "Total rows: " + total;
       }
@@ -1081,7 +1223,7 @@
         return;
       }
 
-      if (!rows.length) {
+      if (!filteredRows.length) {
         if (total === 0) {
           noDataMsgEl.textContent =
             "No data entered for this sheet yet. Add a row using the form above.";
@@ -1091,6 +1233,13 @@
         }
         return;
       }
+
+      const totalPages = Math.max(1, Math.ceil(filteredRows.length / pageSize));
+      if (currentPage > totalPages) currentPage = totalPages;
+
+      const start = (currentPage - 1) * pageSize;
+      const end = Math.min(start + pageSize, filteredRows.length);
+      const pageRows = filteredRows.slice(start, end);
 
       const thead = document.createElement("thead");
       const headerRow = document.createElement("tr");
@@ -1109,7 +1258,7 @@
       tableEl.appendChild(thead);
 
       const tbody = document.createElement("tbody");
-      rows.forEach(row => {
+      pageRows.forEach(row => {
         const realIndex = allRows.indexOf(row);
         const tr = document.createElement("tr");
 
@@ -1149,6 +1298,8 @@
       });
 
       tableEl.appendChild(tbody);
+
+      renderPagination(total, pageRows.length, filteredRows);
     }
 
     function startEditRow(index) {
@@ -1162,6 +1313,7 @@
         "You are editing an existing row. Update fields and click \"Update row\".",
         "success"
       );
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
     function deleteRow(index) {
@@ -1296,12 +1448,19 @@
 
     rowSearchEl.addEventListener("input", e => {
       rowSearchQuery = e.target.value || "";
+      currentPage = 1;
       renderTable();
     });
 
     sheetSearchEl.addEventListener("input", e => {
       sheetSearchQuery = e.target.value || "";
       renderSheetList();
+    });
+
+    pageSizeSelectEl.addEventListener("change", e => {
+      pageSize = parseInt(e.target.value, 10) || 50;
+      currentPage = 1;
+      renderTable();
     });
 
     // Initial load
