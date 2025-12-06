@@ -2,17 +2,23 @@
 <html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8" />
-  <title>Advanced Reports Management Platform</title>
+  <title>Reports Management Console</title>
   <style>
     * {
       box-sizing: border-box;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
     }
 
     body {
       margin: 0;
-      background: #0b1120;
-      color: #111827;
+      background: #020617;
+      color: #020617;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
     }
 
     .app-shell {
@@ -21,65 +27,103 @@
       min-height: 100vh;
     }
 
+    /* Top bar */
+
     .app-header {
-      background: linear-gradient(90deg, #0f172a, #020617);
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      padding: 10px 20px;
+      background: radial-gradient(circle at 0% 0%, #22c55e 0, #0f172a 38%, #020617 80%);
       color: #e5e7eb;
-      padding: 12px 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.45);
-      position: sticky;
-      top: 0;
-      z-index: 50;
+      box-shadow: 0 16px 40px rgba(15, 23, 42, 0.7);
+    }
+
+    .app-header-left {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
     }
 
     .app-header-title {
-      font-size: 19px;
+      font-size: 20px;
       font-weight: 650;
-      letter-spacing: 0.03em;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
     }
 
     .app-header-sub {
       font-size: 12px;
-      color: #9ca3af;
+      color: #cbd5f5;
     }
 
     .app-header-right {
       font-size: 11px;
       color: #9ca3af;
       text-align: right;
+      max-width: 280px;
     }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      font-size: 11px;
+      color: #e5e7eb;
+      background: linear-gradient(120deg, rgba(15, 23, 42, 0.8), rgba(30, 64, 175, 0.9));
+    }
+
+    .pill-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.35);
+    }
+
+    /* Layout */
 
     .app-body {
       flex: 1;
       display: flex;
-      flex-direction: row; /* sidebar on the LEFT */
+      flex-direction: row;
       min-height: calc(100vh - 52px);
+      background: radial-gradient(circle at top, #111827 0, #020617 55%, #020617 100%);
     }
 
     /* Sidebar */
 
     .sidebar {
       width: 290px;
-      background: #020617;
+      padding: 16px 14px 16px 18px;
+      background: linear-gradient(180deg, #020617 0, #020617 40%, #020617 100%);
+      border-right: 1px solid #111827;
       color: #e5e7eb;
-      padding: 16px;
       display: flex;
       flex-direction: column;
-      gap: 14px;
-      border-right: 1px solid #111827;
+      gap: 16px;
+    }
+
+    .sidebar-section {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
     }
 
     .sidebar-section-title {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
-      margin-bottom: 6px;
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      gap: 4px;
+      align-items: center;
+      color: #e5e7eb;
     }
 
     .sheets-count {
@@ -89,12 +133,13 @@
 
     .sidebar-search {
       width: 100%;
-      padding: 7px 10px;
+      padding: 7px 11px;
       border-radius: 999px;
-      border: 1px solid #1e293b;
-      background: #020617;
+      border: 1px solid #1f2933;
+      background: radial-gradient(circle at 0% 0%, #0b1120 0, #020617 70%);
       color: #e5e7eb;
       font-size: 12px;
+      outline: none;
     }
 
     .sidebar-search::placeholder {
@@ -104,7 +149,7 @@
     .sheet-list {
       list-style: none;
       padding: 0;
-      margin: 8px 0 0 0;
+      margin: 0;
       max-height: 46vh;
       overflow-y: auto;
     }
@@ -117,8 +162,8 @@
       width: 100%;
       border: none;
       padding: 8px 10px;
-      border-radius: 10px;
-      background: #020617;
+      border-radius: 12px;
+      background: rgba(15, 23, 42, 0.65);
       color: #e5e7eb;
       text-align: left;
       cursor: pointer;
@@ -128,7 +173,8 @@
       justify-content: space-between;
       gap: 6px;
       border: 1px solid transparent;
-      transition: background 0.15s, transform 0.1s, border-color 0.15s;
+      transition: background 0.16s, transform 0.08s, border-color 0.16s,
+        box-shadow 0.16s;
     }
 
     .sheet-btn span.name {
@@ -144,26 +190,27 @@
     }
 
     .sheet-btn:hover {
-      background: #020617;
-      border-color: #1f2937;
+      background: rgba(15, 23, 42, 0.9);
+      border-color: #1d4ed8;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.7);
       transform: translateY(-1px);
     }
 
     .sheet-btn.active {
-      background: #0ea5e9;
-      color: #0b1120;
-      border-color: #38bdf8;
+      background: radial-gradient(circle at 0% 0%, #22c55e 0, #0ea5e9 32%, #1d4ed8 70%);
+      color: #020617;
+      border-color: #22c55e;
       font-weight: 600;
+      box-shadow: 0 8px 24px rgba(34, 197, 94, 0.55);
     }
 
     .json-controls {
       border-top: 1px solid #111827;
-      padding-top: 10px;
-      margin-top: 4px;
+      padding-top: 12px;
       font-size: 12px;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 7px;
     }
 
     .btn,
@@ -180,15 +227,18 @@
       font-weight: 500;
       text-align: center;
       text-decoration: none;
+      white-space: nowrap;
     }
 
     .btn-primary {
-      background: #22c55e;
+      background: linear-gradient(135deg, #22c55e, #16a34a);
       color: #022c22;
+      border: 1px solid rgba(21, 128, 61, 0.9);
+      box-shadow: 0 10px 25px rgba(22, 163, 74, 0.6);
     }
 
     .btn-primary:hover {
-      background: #4ade80;
+      filter: brightness(1.05);
     }
 
     .file-label {
@@ -196,6 +246,7 @@
       color: #111827;
       position: relative;
       overflow: hidden;
+      border: 1px solid #cbd5f5;
     }
 
     .file-label:hover {
@@ -215,26 +266,25 @@
       line-height: 1.4;
     }
 
-    /* Main area */
+    /* Main */
 
     .main {
       flex: 1;
       padding: 16px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      background: radial-gradient(circle at top, #111827 0, #020617 55%, #020617 100%);
     }
 
     .main-card {
-      background: #ffffff;
-      border-radius: 16px;
+      background: #f9fafb;
+      border-radius: 18px;
       padding: 18px 20px;
-      box-shadow: 0 18px 40px rgba(15,23,42,0.55);
+      box-shadow: 0 16px 40px rgba(15, 23, 42, 0.6);
       display: flex;
       flex-direction: column;
       gap: 14px;
       min-height: calc(100vh - 64px);
+      border: 1px solid #e5e7eb;
     }
 
     .main-header {
@@ -254,10 +304,11 @@
     }
 
     .main-header-title {
-      font-size: 18px;
+      font-size: 19px;
       margin: 0;
       text-transform: uppercase;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.12em;
+      color: #0f172a;
     }
 
     .main-header-sub {
@@ -275,17 +326,17 @@
       display: inline-flex;
       align-items: center;
       gap: 4px;
-      padding: 2px 8px;
+      padding: 3px 9px;
       border-radius: 999px;
-      background: #eff6ff;
-      color: #1d4ed8;
+      background: #e0f2fe;
+      color: #0369a1;
       font-size: 11px;
       font-weight: 500;
       margin-left: 4px;
     }
 
     .tag-ghost {
-      background: #f9fafb;
+      background: #f4f4f5;
       color: #4b5563;
     }
 
@@ -293,7 +344,7 @@
       display: flex;
       justify-content: flex-end;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
       flex-wrap: wrap;
       font-size: 11px;
     }
@@ -311,13 +362,14 @@
     .btn-danger {
       background: #ef4444;
       color: #fef2f2;
+      border: 1px solid #fee2e2;
     }
 
     .btn-danger:hover {
       background: #f97373;
     }
 
-    /* Form area */
+    /* Form */
 
     .form-header-row {
       display: flex;
@@ -325,11 +377,13 @@
       align-items: center;
       justify-content: space-between;
       gap: 8px;
+      margin-top: 4px;
     }
 
     .form-title {
       font-size: 14px;
-      font-weight: 500;
+      font-weight: 600;
+      color: #111827;
     }
 
     .form-actions {
@@ -342,6 +396,7 @@
     .btn-secondary {
       background: #e5e7eb;
       color: #111827;
+      border: 1px solid #d4d4d8;
     }
 
     .btn-secondary:hover {
@@ -352,6 +407,7 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
       gap: 10px 16px;
+      margin-top: 6px;
     }
 
     .form-group {
@@ -370,15 +426,16 @@
     input[type="number"],
     input[type="date"] {
       padding: 7px 8px;
-      border-radius: 8px;
+      border-radius: 9px;
       border: 1px solid #d1d5db;
       font-size: 13px;
+      background: #ffffff;
     }
 
     input:focus {
       outline: none;
-      border-color: #0ea5e9;
-      box-shadow: 0 0 0 1px rgba(14,165,233,0.3);
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.3);
     }
 
     .status-row {
@@ -386,12 +443,9 @@
       flex-wrap: wrap;
       align-items: center;
       gap: 8px;
-      margin-top: 2px;
+      margin-top: 4px;
       font-size: 12px;
-    }
-
-    #message {
-      min-height: 18px;
+      min-height: 20px;
     }
 
     #message.success {
@@ -416,7 +470,7 @@
       color: #6b7280;
     }
 
-    /* Table area */
+    /* Table */
 
     .table-header-row {
       display: flex;
@@ -424,7 +478,7 @@
       justify-content: space-between;
       gap: 8px;
       align-items: center;
-      margin-top: 6px;
+      margin-top: 10px;
     }
 
     .row-stats {
@@ -440,11 +494,12 @@
     }
 
     .table-search {
-      padding: 6px 8px;
+      padding: 6px 10px;
       border-radius: 999px;
       border: 1px solid #d1d5db;
       font-size: 12px;
       min-width: 180px;
+      background: #ffffff;
     }
 
     .page-size-select {
@@ -452,15 +507,16 @@
       border-radius: 999px;
       border: 1px solid #d1d5db;
       font-size: 12px;
+      background: #ffffff;
     }
 
     .table-wrapper {
       margin-top: 6px;
       overflow-x: auto;
-      border-radius: 10px;
+      border-radius: 12px;
       border: 1px solid #e5e7eb;
       background: #f9fafb;
-      max-height: calc(100vh - 330px);
+      max-height: calc(100vh - 340px);
     }
 
     table {
@@ -470,7 +526,8 @@
       min-width: 650px;
     }
 
-    th, td {
+    th,
+    td {
       border-bottom: 1px solid #e5e7eb;
       padding: 6px 8px;
       text-align: left;
@@ -478,7 +535,7 @@
     }
 
     th {
-      background: #f3f4f6;
+      background: #eef2ff;
       font-weight: 600;
       white-space: nowrap;
       position: sticky;
@@ -488,7 +545,7 @@
     }
 
     th.sortable:hover {
-      background: #e5e7eb;
+      background: #e0e7ff;
     }
 
     th .sort-indicator {
@@ -603,22 +660,25 @@
 <body>
   <div class="app-shell">
     <header class="app-header">
-      <div>
-        <div class="app-header-title">Advanced Reports Management Platform</div>
+      <div class="app-header-left">
+        <div class="app-header-title">Reports Management Console</div>
         <div class="app-header-sub">
-          Multi-sheet data entry, analytics-ready, with local storage & JSON backup
+          Multi-sheet data entry and reporting with internal storage & JSON/CSV export
         </div>
       </div>
       <div class="app-header-right">
-        <div>Data is stored locally in your browser (internal storage).</div>
-        <div>Use JSON/CSV export for backup, sharing, and reporting.</div>
+        <div class="pill">
+          <span class="pill-dot"></span>
+          <span>Internal data storage is active (local browser only)</span>
+        </div>
+        <div>Use JSON & CSV export for backup, sharing, and analytics.</div>
       </div>
     </header>
 
     <div class="app-body">
-      <!-- Sidebar on the LEFT -->
+      <!-- Sidebar -->
       <aside class="sidebar">
-        <div>
+        <div class="sidebar-section">
           <div class="sidebar-section-title">
             <span>Sheets</span>
             <span class="sheets-count" id="sheetsCount"></span>
@@ -637,20 +697,20 @@
             <span>JSON Backup</span>
           </div>
           <button id="exportJsonBtn" class="btn btn-primary" type="button">
-            Export ALL sheets as JSON
+            Export all sheets as JSON
           </button>
           <label class="file-label">
             Import from JSON
-            <input type="file" id="importJsonInput" accept="application/json">
+            <input type="file" id="importJsonInput" accept="application/json" />
           </label>
           <div class="json-hint">
-            Export creates a <b>sheets-data.json</b> file for all sheets.<br/>
-            Import will merge data for sheets that exist in this app.
+            Export creates <b>sheets-data.json</b> for all sheets.<br />
+            Import will merge data for sheets already defined in this console.
           </div>
         </div>
       </aside>
 
-      <!-- Main area on the right -->
+      <!-- Main -->
       <main class="main">
         <section class="main-card">
           <div class="main-header">
@@ -659,7 +719,7 @@
                 Select a sheet from the left sidebar
               </h2>
               <div id="sheetSubtitle" class="main-header-sub">
-                Sheet fields and names are automatically generated from your Excel file.
+                Sheet fields and names are automatically synced with your Excel file structure.
               </div>
             </div>
             <div class="main-header-right">
@@ -671,15 +731,23 @@
                   <span id="rowsCountTag">0 rows</span>
                 </span>
               </div>
-              <div>Use the form below to add or edit rows.</div>
+              <div>Use the form below to add or edit rows in the active sheet.</div>
             </div>
           </div>
 
           <div class="sheet-toolbar">
-            <button id="exportSheetJsonBtn" class="btn btn-outline" type="button">
+            <button
+              id="exportSheetJsonBtn"
+              class="btn btn-outline"
+              type="button"
+            >
               Export current sheet as JSON
             </button>
-            <button id="exportSheetCsvBtn" class="btn btn-outline" type="button">
+            <button
+              id="exportSheetCsvBtn"
+              class="btn btn-outline"
+              type="button"
+            >
               Export current sheet as CSV
             </button>
             <button id="clearSheetBtn" class="btn btn-danger" type="button">
@@ -696,7 +764,12 @@
               <button id="clearFormBtn" class="btn btn-secondary" type="button">
                 Clear form
               </button>
-              <button id="cancelEditBtn" class="btn btn-secondary" type="button" style="display:none;">
+              <button
+                id="cancelEditBtn"
+                class="btn btn-secondary"
+                type="button"
+                style="display: none"
+              >
                 Cancel edit
               </button>
             </div>
@@ -706,7 +779,11 @@
 
           <div class="status-row">
             <div id="message"></div>
-            <div id="editIndicator" class="edit-indicator" style="display:none;"></div>
+            <div
+              id="editIndicator"
+              class="edit-indicator"
+              style="display: none"
+            ></div>
             <div id="autosaveIndicator" class="autosave-indicator"></div>
           </div>
 
@@ -739,7 +816,7 @@
   </div>
 
   <script>
-    // Sheets configuration: column names must match Excel / JSON
+    // Sheets configuration: must match Excel/JSON headers
     const sheetsConfig = {
       "QC Sequence Number": [
         "SR NO.",
@@ -925,11 +1002,11 @@
 
     // In-memory data store: sheet name -> array of row objects
     const dataStore = {};
-    Object.keys(sheetsConfig).forEach(name => {
+    Object.keys(sheetsConfig).forEach((name) => {
       dataStore[name] = [];
     });
 
-    const LOCAL_STORAGE_KEY = "sheetsDataStore_v2";
+    const LOCAL_STORAGE_KEY = "reportsConsoleStore_v1";
 
     let currentSheet = null;
     let editIndex = null;
@@ -938,7 +1015,7 @@
     let currentPage = 1;
     let pageSize = 50;
     let sortField = null;
-    let sortDirection = "asc"; // "asc" or "desc"
+    let sortDirection = "asc";
 
     // DOM references
     const sheetListEl = document.getElementById("sheetList");
@@ -971,6 +1048,8 @@
 
     const exportJsonBtn = document.getElementById("exportJsonBtn");
     const importJsonInput = document.getElementById("importJsonInput");
+
+    // Helpers
 
     function guessInputType(fieldName) {
       const upper = fieldName.toUpperCase();
@@ -1015,7 +1094,7 @@
     }
 
     function clearForm() {
-      Array.from(formEl.elements).forEach(el => {
+      Array.from(formEl.elements).forEach((el) => {
         if (el.tagName === "INPUT") {
           el.value = "";
         }
@@ -1035,7 +1114,8 @@
         const id = fieldId(fieldName, index);
         const input = document.getElementById(id);
         const rawValue = input && input.value != null ? input.value : "";
-        const value = typeof rawValue === "string" ? rawValue.trim() : rawValue;
+        const value =
+          typeof rawValue === "string" ? rawValue.trim() : rawValue;
         if (value !== "") {
           hasAnyValue = true;
         }
@@ -1074,7 +1154,7 @@
         const raw = window.localStorage.getItem(LOCAL_STORAGE_KEY);
         if (!raw) return;
         const parsed = JSON.parse(raw);
-        Object.keys(sheetsConfig).forEach(sheetName => {
+        Object.keys(sheetsConfig).forEach((sheetName) => {
           if (Array.isArray(parsed[sheetName])) {
             dataStore[sheetName] = parsed[sheetName];
           }
@@ -1093,12 +1173,12 @@
       const allSheetNames = Object.keys(sheetsConfig);
       sheetsCountEl.textContent = allSheetNames.length + " sheets";
 
-      const filtered = allSheetNames.filter(name =>
+      const filtered = allSheetNames.filter((name) =>
         name.toLowerCase().includes(sheetSearchQuery.toLowerCase())
       );
 
       sheetListEl.innerHTML = "";
-      filtered.forEach(name => {
+      filtered.forEach((name) => {
         const li = document.createElement("li");
         const btn = document.createElement("button");
         btn.type = "button";
@@ -1147,7 +1227,7 @@
       if (!currentSheet) {
         sheetTitleEl.textContent = "Select a sheet from the left sidebar";
         sheetSubtitleEl.textContent =
-          "Sheet fields and names are automatically generated from your Excel file.";
+          "Sheet fields and names are automatically synced with your Excel file structure.";
         fieldsCountTagEl.textContent = "0 fields";
         rowsCountTagEl.textContent = "0 rows";
         rowStatsEl.textContent = "";
@@ -1165,7 +1245,7 @@
       rowStatsEl.textContent = "Total rows: " + rows.length;
     }
 
-    // Form
+    // Form rendering
 
     function renderForm() {
       formEl.innerHTML = "";
@@ -1189,7 +1269,7 @@
       });
     }
 
-    // Helpers for sorting & filtering
+    // Sorting & filtering helpers
 
     function compareValues(a, b) {
       if (a === null || a === undefined) a = "";
@@ -1210,8 +1290,8 @@
 
       if (rowSearchQuery.trim()) {
         const query = rowSearchQuery.toLowerCase();
-        result = result.filter(row =>
-          fields.some(fieldName => {
+        result = result.filter((row) =>
+          fields.some((fieldName) => {
             const value = row[fieldName];
             if (value == null) return false;
             return String(value).toLowerCase().includes(query);
@@ -1323,14 +1403,14 @@
 
       if (!fields.length) {
         noDataMsgEl.textContent =
-          "No fields are defined for this sheet in the code.";
+          "No fields are defined for this sheet in the configuration.";
         return;
       }
 
       if (!filteredRows.length) {
         if (total === 0) {
           noDataMsgEl.textContent =
-            "No data entered for this sheet yet. Add a row using the form above.";
+            "No data entered yet. Use the form above to add rows.";
         } else {
           noDataMsgEl.textContent =
             "No rows match your search. Clear the search to see all rows.";
@@ -1348,7 +1428,7 @@
       const thead = document.createElement("thead");
       const headerRow = document.createElement("tr");
 
-      fields.forEach(fieldName => {
+      fields.forEach((fieldName) => {
         const th = document.createElement("th");
         th.className = "sortable";
         const textSpan = document.createElement("span");
@@ -1385,11 +1465,11 @@
       tableEl.appendChild(thead);
 
       const tbody = document.createElement("tbody");
-      pageRows.forEach(row => {
+      pageRows.forEach((row) => {
         const realIndex = allRows.indexOf(row);
         const tr = document.createElement("tr");
 
-        fields.forEach(fieldName => {
+        fields.forEach((fieldName) => {
           const td = document.createElement("td");
           const v = row[fieldName];
           td.textContent = v == null ? "" : String(v);
@@ -1437,7 +1517,7 @@
       populateFormFromRow(rows[index]);
       setEditIndicator(index);
       showMessage(
-        "You are editing an existing row. Update fields and click \"Update row\".",
+        'You are editing an existing row. Update fields and click "Update row".',
         "success"
       );
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -1473,7 +1553,7 @@
 
       const fields = sheetsConfig[currentSheet] || [];
       if (!fields.length) {
-        showMessage("No fields defined for this sheet in the code.", "error");
+        showMessage("No fields defined for this sheet.", "error");
         return;
       }
 
@@ -1530,12 +1610,12 @@
       if (!file) return;
 
       const reader = new FileReader();
-      reader.onload = e => {
+      reader.onload = (e) => {
         try {
           const imported = JSON.parse(e.target.result);
 
           let importedSheetsCount = 0;
-          Object.keys(sheetsConfig).forEach(sheetName => {
+          Object.keys(sheetsConfig).forEach((sheetName) => {
             if (Array.isArray(imported[sheetName])) {
               dataStore[sheetName] = imported[sheetName];
               importedSheetsCount += 1;
@@ -1603,13 +1683,18 @@
       }
 
       let csv = "";
-      csv += fields.map(f => '"' + String(f).replace(/"/g, '""') + '"').join(",") + "\n";
+      csv +=
+        fields
+          .map((f) => '"' + String(f).replace(/"/g, '""') + '"')
+          .join(",") + "\n";
 
-      rows.forEach(row => {
-        const line = fields.map(f => {
-          const v = row[f] == null ? "" : String(row[f]);
-          return '"' + v.replace(/"/g, '""') + '"';
-        }).join(",");
+      rows.forEach((row) => {
+        const line = fields
+          .map((f) => {
+            const v = row[f] == null ? "" : String(row[f]);
+            return '"' + v.replace(/"/g, '""') + '"';
+          })
+          .join(",");
         csv += line + "\n";
       });
 
@@ -1636,7 +1721,9 @@
         return;
       }
       const confirmed = window.confirm(
-        "This will remove ALL rows from \"" + currentSheet + "\" in local storage. Continue?"
+        'This will remove ALL rows from "' +
+          currentSheet +
+          '" in local storage. Continue?'
       );
       if (!confirmed) return;
 
@@ -1664,18 +1751,18 @@
     exportSheetCsvBtn.addEventListener("click", handleExportCurrentSheetCsv);
     clearSheetBtn.addEventListener("click", handleClearCurrentSheet);
 
-    rowSearchEl.addEventListener("input", e => {
+    rowSearchEl.addEventListener("input", (e) => {
       rowSearchQuery = e.target.value || "";
       currentPage = 1;
       renderTable();
     });
 
-    sheetSearchEl.addEventListener("input", e => {
+    sheetSearchEl.addEventListener("input", (e) => {
       sheetSearchQuery = e.target.value || "";
       renderSheetList();
     });
 
-    pageSizeSelectEl.addEventListener("change", e => {
+    pageSizeSelectEl.addEventListener("change", (e) => {
       pageSize = parseInt(e.target.value, 10) || 50;
       currentPage = 1;
       renderTable();
