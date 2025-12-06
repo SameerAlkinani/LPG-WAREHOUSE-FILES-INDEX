@@ -4,21 +4,150 @@
   <meta charset="UTF-8" />
   <title>Reports Management Console</title>
   <style>
-    * {
-      box-sizing: border-box;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-        sans-serif;
+    /* =========================
+       THEME VARIABLES
+       ========================= */
+    :root {
+      --bg-body: #0f172a;
+      --bg-header: #020617;
+      --bg-sidebar: #020617;
+      --bg-main-card: #f9fafb;
+      --bg-table: #ffffff;
+      --bg-table-alt: #f9fafb;
+      --bg-table-hover: #eef2ff;
+      --bg-th: #eef2ff;
+      --text-main: #0f172a;
+      --text-muted: #6b7280;
+      --text-inverse: #e5e7eb;
+      --border-subtle: #e5e7eb;
+      --accent: #3b82f6;
+      --accent-soft: #dbeafe;
+      --danger: #ef4444;
+      --danger-soft: #fee2e2;
+      --success: #22c55e;
+      --pill-bg: #111827;
+      --pill-border: #4b5563;
+      --scroll-track: #e5e7eb;
+      --scroll-thumb: #9ca3af;
+      --input-bg: #ffffff;
+      --input-border: #d1d5db;
+      --modal-bg: #f9fafb;
     }
 
+    body.theme-dark {
+      --bg-body: #020617;
+      --bg-header: radial-gradient(circle at 0% 0%, #22c55e 0, #0f172a 38%, #020617 80%);
+      --bg-sidebar: #020617;
+      --bg-main-card: #020617;
+      --bg-table: #111827;
+      --bg-table-alt: #020617;
+      --bg-table-hover: #1f2937;
+      --bg-th: #111827;
+      --text-main: #e5e7eb;
+      --text-muted: #9ca3af;
+      --text-inverse: #e5e7eb;
+      --border-subtle: #1f2937;
+      --accent: #38bdf8;
+      --accent-soft: #0f172a;
+      --danger: #f97373;
+      --danger-soft: #7f1d1d;
+      --success: #22c55e;
+      --pill-bg: #020617;
+      --pill-border: #334155;
+      --scroll-track: #020617;
+      --scroll-thumb: #4b5563;
+      --input-bg: #020617;
+      --input-border: #374151;
+      --modal-bg: #020617;
+    }
+
+    body.theme-ocean {
+      --bg-body: #020617;
+      --bg-header: linear-gradient(90deg, #0f172a, #0ea5e9);
+      --bg-sidebar: #020617;
+      --bg-main-card: #020617;
+      --bg-table: #0f172a;
+      --bg-table-alt: #020617;
+      --bg-table-hover: #1e293b;
+      --bg-th: #0b1120;
+      --text-main: #e5e7eb;
+      --text-muted: #9ca3af;
+      --text-inverse: #e5e7eb;
+      --border-subtle: #1e293b;
+      --accent: #0ea5e9;
+      --accent-soft: #0b1120;
+      --danger: #fb7185;
+      --danger-soft: #7f1d1d;
+      --success: #22c55e;
+      --pill-bg: #020617;
+      --pill-border: #1d4ed8;
+      --scroll-track: #020617;
+      --scroll-thumb: #38bdf8;
+      --input-bg: #020617;
+      --input-border: #1f2937;
+      --modal-bg: #020617;
+    }
+
+    body.theme-light {
+      --bg-body: #f3f4f6;
+      --bg-header: linear-gradient(90deg, #ffffff, #e5e7eb);
+      --bg-sidebar: #f9fafb;
+      --bg-main-card: #ffffff;
+      --bg-table: #ffffff;
+      --bg-table-alt: #f9fafb;
+      --bg-table-hover: #eef2ff;
+      --bg-th: #eef2ff;
+      --text-main: #111827;
+      --text-muted: #6b7280;
+      --text-inverse: #111827;
+      --border-subtle: #d1d5db;
+      --accent: #3b82f6;
+      --accent-soft: #dbeafe;
+      --danger: #b91c1c;
+      --danger-soft: #fee2e2;
+      --success: #16a34a;
+      --pill-bg: #e5e7eb;
+      --pill-border: #9ca3af;
+      --scroll-track: #e5e7eb;
+      --scroll-thumb: #9ca3af;
+      --input-bg: #ffffff;
+      --input-border: #d1d5db;
+      --modal-bg: #ffffff;
+    }
+
+    /* Default theme */
     body {
       margin: 0;
-      background: #e5e7eb;
-      color: #111827;
+      background: var(--bg-body);
+      color: var(--text-main);
     }
 
     a {
       color: inherit;
       text-decoration: none;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      scrollbar-width: thin;
+      scrollbar-color: var(--scroll-thumb) var(--scroll-track);
+    }
+
+    *::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    *::-webkit-scrollbar-track {
+      background: var(--scroll-track);
+      border-radius: 10px;
+    }
+
+    *::-webkit-scrollbar-thumb {
+      background-color: var(--scroll-thumb);
+      border-radius: 10px;
     }
 
     .app-shell {
@@ -34,13 +163,13 @@
       top: 0;
       z-index: 40;
       padding: 10px 20px;
-      background: linear-gradient(120deg, #1d4ed8, #0f172a);
-      color: #e5e7eb;
+      background: var(--bg-header);
+      color: var(--text-inverse);
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.45);
+      box-shadow: 0 16px 40px rgba(15, 23, 42, 0.7);
     }
 
     .app-header-left {
@@ -58,14 +187,14 @@
 
     .app-header-sub {
       font-size: 12px;
-      color: #d1d5db;
+      color: var(--text-muted);
     }
 
     .app-header-right {
       font-size: 11px;
-      color: #cbd5f5;
+      color: var(--text-muted);
       text-align: right;
-      max-width: 280px;
+      max-width: 320px;
     }
 
     .pill {
@@ -74,18 +203,28 @@
       gap: 6px;
       padding: 3px 9px;
       border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.5);
+      border: 1px solid var(--pill-border);
       font-size: 11px;
-      color: #e5e7eb;
-      background: linear-gradient(120deg, rgba(15, 23, 42, 0.9), rgba(37, 99, 235, 0.9));
+      color: var(--text-inverse);
+      background: var(--pill-bg);
     }
 
     .pill-dot {
       width: 7px;
       height: 7px;
       border-radius: 999px;
-      background: #22c55e;
-      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.3);
+      background: var(--success);
+      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.35);
+    }
+
+    .theme-select {
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      font-size: 12px;
+      background: rgba(15, 23, 42, 0.4);
+      color: var(--text-inverse);
+      outline: none;
     }
 
     /* Layout */
@@ -95,17 +234,17 @@
       display: flex;
       flex-direction: row;
       min-height: calc(100vh - 52px);
-      background: #e5e7eb;
+      background: var(--bg-body);
     }
 
     /* Sidebar */
 
     .sidebar {
-      width: 280px;
+      width: 290px;
       padding: 16px 14px 16px 18px;
-      background: #f3f4f6;
-      border-right: 1px solid #d4d4d8;
-      color: #111827;
+      background: var(--bg-sidebar);
+      border-right: 1px solid #111827;
+      color: var(--text-inverse);
       display: flex;
       flex-direction: column;
       gap: 16px;
@@ -123,27 +262,27 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      color: #111827;
+      color: var(--text-inverse);
     }
 
     .sheets-count {
       font-size: 11px;
-      color: #6b7280;
+      color: #9ca3af;
     }
 
     .sidebar-search {
       width: 100%;
       padding: 7px 11px;
       border-radius: 999px;
-      border: 1px solid #d1d5db;
-      background: #ffffff;
-      color: #111827;
+      border: 1px solid #1f2933;
+      background: #020617;
+      color: var(--text-inverse);
       font-size: 12px;
       outline: none;
     }
 
     .sidebar-search::placeholder {
-      color: #9ca3af;
+      color: #6b7280;
     }
 
     .sheet-list {
@@ -163,8 +302,8 @@
       border: none;
       padding: 8px 10px;
       border-radius: 12px;
-      background: #ffffff;
-      color: #111827;
+      background: rgba(15, 23, 42, 0.65);
+      color: #e5e7eb;
       text-align: left;
       cursor: pointer;
       font-size: 12px;
@@ -186,26 +325,26 @@
 
     .sheet-btn span.fields-count {
       font-size: 10px;
-      color: #6b7280;
+      color: #9ca3af;
     }
 
     .sheet-btn:hover {
-      background: #eef2ff;
-      border-color: #93c5fd;
-      box-shadow: 0 4px 10px rgba(148, 163, 184, 0.4);
+      background: rgba(15, 23, 42, 0.9);
+      border-color: var(--accent);
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.7);
       transform: translateY(-1px);
     }
 
     .sheet-btn.active {
-      background: #1d4ed8;
-      color: #eff6ff;
-      border-color: #1d4ed8;
+      background: linear-gradient(135deg, var(--accent), var(--success));
+      color: #020617;
+      border-color: var(--success);
       font-weight: 600;
-      box-shadow: 0 6px 18px rgba(37, 99, 235, 0.4);
+      box-shadow: 0 8px 24px rgba(34, 197, 94, 0.55);
     }
 
     .json-controls {
-      border-top: 1px solid #d4d4d8;
+      border-top: 1px solid #111827;
       padding-top: 12px;
       font-size: 12px;
       display: flex;
@@ -231,26 +370,56 @@
     }
 
     .btn-primary {
-      background: linear-gradient(135deg, #22c55e, #16a34a);
+      background: linear-gradient(135deg, var(--success), #16a34a);
       color: #022c22;
       border: 1px solid rgba(21, 128, 61, 0.9);
-      box-shadow: 0 6px 16px rgba(22, 163, 74, 0.35);
+      box-shadow: 0 10px 25px rgba(22, 163, 74, 0.6);
     }
 
     .btn-primary:hover {
       filter: brightness(1.05);
     }
 
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-main);
+    }
+
+    .btn-outline:hover {
+      background: var(--accent-soft);
+    }
+
+    .btn-danger {
+      background: var(--danger);
+      color: #fef2f2;
+      border: 1px solid var(--danger);
+    }
+
+    .btn-danger:hover {
+      filter: brightness(1.05);
+    }
+
+    .btn-secondary {
+      background: #e5e7eb;
+      color: #111827;
+      border: 1px solid #d4d4d8;
+    }
+
+    .btn-secondary:hover {
+      background: #d1d5db;
+    }
+
     .file-label {
-      background: #ffffff;
+      background: #e5e7eb;
       color: #111827;
       position: relative;
       overflow: hidden;
-      border: 1px solid #d1d5db;
+      border: 1px solid #cbd5f5;
     }
 
     .file-label:hover {
-      background: #e5e7eb;
+      background: #d1d5db;
     }
 
     .file-label input[type="file"] {
@@ -262,7 +431,7 @@
 
     .json-hint {
       font-size: 11px;
-      color: #6b7280;
+      color: #9ca3af;
       line-height: 1.4;
     }
 
@@ -273,18 +442,20 @@
       padding: 16px;
       display: flex;
       flex-direction: column;
+      overflow: hidden;
     }
 
     .main-card {
-      background: #ffffff;
+      background: var(--bg-main-card);
       border-radius: 18px;
       padding: 18px 20px;
-      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.15);
+      box-shadow: 0 16px 40px rgba(15, 23, 42, 0.6);
       display: flex;
       flex-direction: column;
       gap: 14px;
       min-height: calc(100vh - 64px);
-      border: 1px solid #e5e7eb;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-main);
     }
 
     .main-header {
@@ -293,7 +464,7 @@
       align-items: flex-start;
       justify-content: space-between;
       gap: 10px;
-      border-bottom: 1px solid #e5e7eb;
+      border-bottom: 1px solid var(--border-subtle);
       padding-bottom: 10px;
     }
 
@@ -308,18 +479,18 @@
       margin: 0;
       text-transform: uppercase;
       letter-spacing: 0.12em;
-      color: #0f172a;
+      color: var(--text-main);
     }
 
     .main-header-sub {
       font-size: 12px;
-      color: #6b7280;
+      color: var(--text-muted);
     }
 
     .main-header-right {
       text-align: right;
       font-size: 11px;
-      color: #6b7280;
+      color: var(--text-muted);
     }
 
     .tag {
@@ -328,8 +499,8 @@
       gap: 4px;
       padding: 3px 9px;
       border-radius: 999px;
-      background: #e0f2fe;
-      color: #0369a1;
+      background: var(--accent-soft);
+      color: var(--accent);
       font-size: 11px;
       font-weight: 500;
       margin-left: 4px;
@@ -356,27 +527,6 @@
       flex-wrap: wrap;
     }
 
-    .btn-outline {
-      background: #ffffff;
-      border: 1px solid #d1d5db;
-      color: #111827;
-    }
-
-    .btn-outline:hover {
-      background: #f3f4f6;
-    }
-
-    .btn-danger {
-      background: #f97373;
-      color: #7f1d1d;
-      border: 1px solid #fecaca;
-    }
-
-    .btn-danger:hover {
-      background: #ef4444;
-      color: #fee2e2;
-    }
-
     /* Status */
 
     .status-row {
@@ -390,11 +540,11 @@
     }
 
     #message.success {
-      color: #059669;
+      color: var(--success);
     }
 
     #message.error {
-      color: #b91c1c;
+      color: var(--danger);
     }
 
     .edit-indicator {
@@ -408,7 +558,7 @@
 
     .autosave-indicator {
       font-size: 11px;
-      color: #6b7280;
+      color: var(--text-muted);
     }
 
     /* Table */
@@ -424,7 +574,7 @@
 
     .row-stats {
       font-size: 11px;
-      color: #6b7280;
+      color: var(--text-muted);
     }
 
     .table-search-group {
@@ -437,93 +587,87 @@
     .table-search {
       padding: 6px 10px;
       border-radius: 999px;
-      border: 1px solid #d1d5db;
+      border: 1px solid var(--input-border);
       font-size: 12px;
       min-width: 180px;
-      background: #ffffff;
+      background: var(--input-bg);
+      color: var(--text-main);
     }
 
     .page-size-select {
       padding: 6px 8px;
       border-radius: 999px;
-      border: 1px solid #d1d5db;
+      border: 1px solid var(--input-border);
       font-size: 12px;
-      background: #ffffff;
+      background: var(--input-bg);
+      color: var(--text-main);
     }
 
-    /* BOTH directions scroll here */
     .table-wrapper {
       margin-top: 6px;
+      overflow-x: auto !important;
+      overflow-y: auto !important;
       border-radius: 12px;
-      border: 1px solid #e5e7eb;
-      background: #f9fafb;
-      max-height: calc(100vh - 340px);
-      overflow: auto;      /* vertical + horizontal */
-    }
-
-    /* nicer scrollbars */
-    .table-wrapper::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
-    }
-    .table-wrapper::-webkit-scrollbar-track {
-      background: #e5e7eb;
-      border-radius: 999px;
-    }
-    .table-wrapper::-webkit-scrollbar-thumb {
-      background: #9ca3af;
-      border-radius: 999px;
-    }
-    .table-wrapper::-webkit-scrollbar-thumb:hover {
-      background: #6b7280;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-table-alt);
+      max-height: calc(100vh - 320px);
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
       font-size: 12px;
-      min-width: 650px;
+      min-width: 900px;
+      background: var(--bg-table);
+      color: var(--text-main);
     }
 
     th,
     td {
-      border-bottom: 1px solid #e5e7eb;
+      border-bottom: 1px solid var(--border-subtle);
       padding: 6px 8px;
       text-align: left;
       vertical-align: top;
     }
 
     th {
-      background: #eef2ff;
+      background: var(--bg-th);
       font-weight: 600;
       white-space: nowrap;
       position: sticky;
       top: 0;
       z-index: 5;
       cursor: pointer;
+      color: var(--text-main);
     }
 
     th.sortable:hover {
-      background: #e0e7ff;
+      background: var(--accent-soft);
     }
 
     th .sort-indicator {
       margin-left: 4px;
       font-size: 10px;
-      color: #6b7280;
+      color: var(--text-muted);
+    }
+
+    td {
+      background: var(--bg-table);
+      color: var(--text-main);
     }
 
     tr:nth-child(even) td {
-      background: #f9fafb;
+      background: var(--bg-table-alt);
     }
 
     tr:hover td {
-      background: #e5f3ff;
+      background: var(--bg-table-hover);
+      color: var(--text-inverse);
     }
 
     .no-data {
       font-size: 12px;
-      color: #9ca3af;
+      color: var(--text-muted);
       padding: 10px 0 2px;
     }
 
@@ -552,12 +696,12 @@
     }
 
     .table-btn-delete {
-      background: #fee2e2;
-      color: #b91c1c;
+      background: var(--danger-soft);
+      color: var(--danger);
     }
 
     .table-btn-delete:hover {
-      background: #fecaca;
+      filter: brightness(1.05);
     }
 
     /* Pagination */
@@ -568,7 +712,7 @@
       align-items: center;
       margin-top: 8px;
       font-size: 11px;
-      color: #6b7280;
+      color: var(--text-muted);
       flex-wrap: wrap;
       gap: 6px;
     }
@@ -582,15 +726,16 @@
 
     .pagination-btn {
       border-radius: 999px;
-      border: 1px solid #d1d5db;
-      background: #ffffff;
+      border: 1px solid var(--input-border);
+      background: var(--input-bg);
       padding: 3px 10px;
       font-size: 11px;
       cursor: pointer;
+      color: var(--text-main);
     }
 
     .pagination-btn:hover:not(:disabled) {
-      background: #e5e7eb;
+      background: var(--accent-soft);
     }
 
     .pagination-btn:disabled {
@@ -603,7 +748,7 @@
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(15, 23, 42, 0.4);
+      background: rgba(15, 23, 42, 0.6);
       display: none;
       align-items: center;
       justify-content: center;
@@ -612,20 +757,21 @@
     }
 
     .modal-card {
-      background: #ffffff;
+      background: var(--modal-bg);
       border-radius: 16px;
       max-width: 900px;
       width: 100%;
       max-height: 90vh;
       display: flex;
       flex-direction: column;
-      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.35);
-      border: 1px solid #e5e7eb;
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.65);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-main);
     }
 
     .modal-header {
       padding: 12px 16px;
-      border-bottom: 1px solid #e5e7eb;
+      border-bottom: 1px solid var(--border-subtle);
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -635,7 +781,7 @@
     .modal-title {
       font-size: 15px;
       font-weight: 600;
-      color: #111827;
+      color: var(--text-main);
     }
 
     .modal-close-btn {
@@ -644,7 +790,7 @@
       cursor: pointer;
       font-size: 16px;
       line-height: 1;
-      color: #6b7280;
+      color: var(--text-muted);
       border-radius: 999px;
       padding: 4px 6px;
     }
@@ -660,7 +806,7 @@
 
     .modal-footer {
       padding: 10px 16px 12px 16px;
-      border-top: 1px solid #e5e7eb;
+      border-top: 1px solid var(--border-subtle);
       display: flex;
       justify-content: flex-end;
       gap: 8px;
@@ -681,7 +827,7 @@
 
     label {
       font-weight: 500;
-      color: #374151;
+      color: var(--text-main);
     }
 
     input[type="text"],
@@ -689,15 +835,16 @@
     input[type="date"] {
       padding: 7px 8px;
       border-radius: 9px;
-      border: 1px solid #d1d5db;
+      border: 1px solid var(--input-border);
       font-size: 13px;
-      background: #ffffff;
+      background: var(--input-bg);
+      color: var(--text-main);
     }
 
     input:focus {
       outline: none;
-      border-color: #3b82f6;
-      box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.25);
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.3);
     }
 
     @media (max-width: 900px) {
@@ -707,7 +854,7 @@
       .sidebar {
         width: 100%;
         border-right: none;
-        border-bottom: 1px solid #d4d4d8;
+        border-bottom: 1px solid #111827;
       }
       .main-card {
         min-height: auto;
@@ -718,7 +865,7 @@
     }
   </style>
 </head>
-<body>
+<body class="theme-dark">
   <div class="app-shell">
     <header class="app-header">
       <div class="app-header-left">
@@ -728,9 +875,16 @@
         </div>
       </div>
       <div class="app-header-right">
-        <div class="pill">
-          <span class="pill-dot"></span>
-          <span>Internal data storage is active (local browser only)</span>
+        <div style="display:flex; gap:8px; justify-content:flex-end; align-items:center; margin-bottom:4px; flex-wrap:wrap;">
+          <div class="pill">
+            <span class="pill-dot"></span>
+            <span>Internal data storage is active (local browser only)</span>
+          </div>
+          <select id="themeSelect" class="theme-select">
+            <option value="dark">Dark</option>
+            <option value="light">Light</option>
+            <option value="ocean">Ocean</option>
+          </select>
         </div>
         <div>Use JSON & CSV export for backup, sharing, and analytics.</div>
       </div>
@@ -875,10 +1029,10 @@
         <button id="saveRowBtn" class="btn btn-primary" type="button">
           Save row
         </button>
-        <button id="clearFormBtn" class="btn btn-outline" type="button">
+        <button id="clearFormBtn" class="btn btn-secondary" type="button">
           Clear form
         </button>
-        <button id="cancelEditBtn" class="btn btn-outline" type="button">
+        <button id="cancelEditBtn" class="btn btn-secondary" type="button">
           Cancel
         </button>
       </div>
@@ -886,7 +1040,7 @@
   </div>
 
   <script>
-    // Sheets configuration: must match Excel/JSON headers
+    // ===== SHEETS CONFIG (same structure as Excel / JSON) =====
     const sheetsConfig = {
       "QC Sequence Number": [
         "SR NO.",
@@ -1070,13 +1224,15 @@
       ]
     };
 
-    // In-memory data store: sheet name -> array of row objects
+    // ========== DATA STORE ==========
+
     const dataStore = {};
     Object.keys(sheetsConfig).forEach((name) => {
       dataStore[name] = [];
     });
 
     const LOCAL_STORAGE_KEY = "reportsConsoleStore_v3";
+    const THEME_STORAGE_KEY = "reportsConsoleTheme_v1";
 
     let currentSheet = null;
     let editIndex = null;
@@ -1124,7 +1280,28 @@
     const exportJsonBtn = document.getElementById("exportJsonBtn");
     const importJsonInput = document.getElementById("importJsonInput");
 
-    // Helpers
+    const themeSelectEl = document.getElementById("themeSelect");
+
+    // ===== Theme handling =====
+
+    function applyTheme(theme) {
+      const allowed = ["dark", "light", "ocean"];
+      const chosen = allowed.includes(theme) ? theme : "dark";
+      document.body.classList.remove(
+        "theme-dark",
+        "theme-light",
+        "theme-ocean"
+      );
+      document.body.classList.add("theme-" + chosen);
+      themeSelectEl.value = chosen;
+      try {
+        localStorage.setItem(THEME_STORAGE_KEY, chosen);
+      } catch (e) {
+        console.warn("Cannot store theme", e);
+      }
+    }
+
+    // ===== Helpers =====
 
     function guessInputType(fieldName) {
       const upper = fieldName.toUpperCase();
@@ -1207,7 +1384,7 @@
       });
     }
 
-    // Modal
+    // ===== Modal =====
 
     function openModal(mode, index) {
       if (!currentSheet) {
@@ -1234,7 +1411,7 @@
       rowModalEl.style.display = "none";
     }
 
-    // Local storage
+    // ===== Local storage =====
 
     function saveToLocalStorage() {
       try {
@@ -1264,7 +1441,7 @@
       }
     }
 
-    // Sheet list
+    // ===== Sheet list =====
 
     function renderSheetList() {
       const allSheetNames = Object.keys(sheetsConfig);
@@ -1336,13 +1513,13 @@
       sheetSubtitleEl.textContent =
         "This sheet has " +
         fields.length +
-        " fields. Use the Add row button to manage data.";
+        " fields. Use the Add row button and row actions to manage data.";
       fieldsCountTagEl.textContent = fields.length + " fields";
       rowsCountTagEl.textContent = rows.length + " rows total";
       rowStatsEl.textContent = "Total rows: " + rows.length;
     }
 
-    // Form rendering
+    // ===== Form rendering =====
 
     function renderForm() {
       formEl.innerHTML = "";
@@ -1366,7 +1543,7 @@
       });
     }
 
-    // Sorting & filtering helpers
+    // ===== Sorting & filtering =====
 
     function compareValues(a, b) {
       if (a === null || a === undefined) a = "";
@@ -1406,7 +1583,7 @@
       return result;
     }
 
-    // Pagination
+    // ===== Pagination =====
 
     function renderPagination(filteredRows) {
       if (!currentSheet) {
@@ -1475,7 +1652,7 @@
       paginationEl.appendChild(container);
     }
 
-    // Table
+    // ===== Table =====
 
     function renderTable() {
       tableEl.innerHTML = "";
@@ -1598,7 +1775,6 @@
         actionsTd.appendChild(actionsDiv);
         tr.appendChild(actionsTd);
 
-        // Double click on row to edit
         tr.addEventListener("dblclick", () => {
           startEditRow(realIndex);
         });
@@ -1642,7 +1818,7 @@
       showMessage("Row deleted.", "success");
     }
 
-    // Actions
+    // ===== Actions =====
 
     function handleSaveRow() {
       if (!currentSheet) {
@@ -1835,7 +2011,7 @@
       showMessage("Current sheet cleared.", "success");
     }
 
-    // Event bindings
+    // ===== Event bindings =====
 
     saveRowBtn.addEventListener("click", handleSaveRow);
     clearFormBtn.addEventListener("click", clearForm);
@@ -1879,9 +2055,21 @@
       renderTable();
     });
 
-    // Initial load
+    themeSelectEl.addEventListener("change", (e) => {
+      applyTheme(e.target.value);
+    });
+
+    // ===== Initial load =====
 
     window.addEventListener("load", () => {
+      // Theme
+      try {
+        const storedTheme = localStorage.getItem(THEME_STORAGE_KEY) || "dark";
+        applyTheme(storedTheme);
+      } catch {
+        applyTheme("dark");
+      }
+
       loadFromLocalStorage();
       renderSheetList();
       const first = Object.keys(sheetsConfig)[0];
